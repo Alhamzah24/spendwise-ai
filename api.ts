@@ -81,7 +81,8 @@ export const apiUploadStatement = async (file: File) => {
 export const apiUploadBilan = apiUploadStatement;
 export const apiForecast = (data: { transactions: object[] }) =>
   fetch(`${API}/ml`, { method: 'POST', headers: headers(), body: JSON.stringify({ action: 'forecast', ...data }) }).then(r => r.json());
-export const apiPredictXAU = (data: object) => Promise.resolve({ signal: 'HOLD', confidence: 0.5 });
+export const apiPredictXAU = (data: object) =>
+  fetch(`${API}/ml`, { method: 'POST', headers: headers(), body: JSON.stringify({ action: 'trading', ...data }) }).then(r => r.json());
 export const apiGetSimulations = () => Promise.resolve([]);
 export const apiCreateSimulation = (data: object) => Promise.resolve({ ...data });
 export const apiDeleteSimulation = (id: string) => Promise.resolve({ message: 'Deleted.' });
