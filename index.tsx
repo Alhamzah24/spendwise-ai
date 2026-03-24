@@ -717,18 +717,26 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-10 animate-fade-in pb-20">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/5 pb-10">
-        <div>
-           <h2 className="text-5xl font-black text-white tracking-tighter uppercase italic">Trading Terminal</h2>
-           <p className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px] mt-3">Intelligence Quantitative SpendWise</p>
+    <div className="p-10 max-w-7xl mx-auto space-y-12 animate-fade-in pb-32">
+      {/* --- Terminal Header --- */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
+        <div className="space-y-4">
+           <div className="flex items-center gap-3">
+             <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[8px] font-black text-emerald-500 uppercase tracking-[0.2em]">v4.2.0 Stable</span>
+             <span className="px-3 py-1 bg-zinc-900 border border-white/5 rounded-full text-[8px] font-black text-zinc-500 uppercase tracking-[0.2em]">Neural Engine Active</span>
+           </div>
+           <h2 className="text-6xl font-black text-white tracking-tighter uppercase italic leading-none">
+             Trading <span className="text-emerald-500">Terminal</span>
+           </h2>
+           <p className="text-zinc-500 font-bold uppercase tracking-[0.4em] text-[10px]">Quantum Alpha intelligence System</p>
         </div>
-        <div className="flex bg-[#0c0c0c] border border-white/10 rounded-2xl p-2 shrink-0 shadow-2xl">
+        
+        <div className="flex items-center gap-4 bg-[#0c0c0c]/50 backdrop-blur-xl border border-white/5 rounded-3xl p-2 shadow-2xl">
            {['1M', '5M', '15M', '1H', '4H', '1D'].map(t => (
              <button 
                key={t}
                onClick={() => setGap(t)}
-               className={`px-6 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${gap === t ? 'bg-emerald-600 text-white shadow-lg' : 'text-zinc-600 hover:text-white'}`}
+               className={`px-8 py-4 rounded-2xl text-[10px] font-black tracking-widest transition-all duration-500 ${gap === t ? 'bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)] scale-105' : 'text-zinc-600 hover:text-zinc-300 hover:bg-white/5'}`}
              >
                {t}
              </button>
@@ -736,114 +744,155 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-        <div className="lg:col-span-3 space-y-10">
-          <div className="bg-[#0c0c0c] border border-white/5 rounded-[3rem] p-10 space-y-10 shadow-3xl relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:scale-125 transition-transform duration-1000">
-                 <i data-lucide="activity" className="w-64 h-64 text-emerald-500"></i>
-             </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* --- Main Chart Column --- */}
+        <div className="lg:col-span-8 space-y-12">
+          <div className="bg-[#0c0c0c] border border-white/5 rounded-[4rem] p-12 space-y-12 shadow-3xl relative overflow-hidden group/main">
+             <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/5 blur-[120px] rounded-full group-hover/main:bg-emerald-500/10 transition-colors duration-1000"></div>
              
              <div className="flex justify-between items-center relative z-10">
-                <div className="flex items-center gap-5">
-                   <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20 shadow-inner">
-                      <i data-lucide="landmark" className="w-8 h-8 text-amber-500"></i>
+                <div className="flex items-center gap-6">
+                   <div className="w-16 h-16 bg-gradient-to-br from-amber-500/20 to-amber-600/5 rounded-3xl flex items-center justify-center border border-amber-500/20 shadow-2xl shadow-amber-500/10 group-hover/main:rotate-6 transition-transform">
+                      <i data-lucide="landmark" className="w-9 h-9 text-amber-500"></i>
                    </div>
                    <div>
-                      <h3 className="font-black text-3xl text-white italic tracking-tighter">Market Analysis: XAU/USD</h3>
-                      <p className="text-xs font-black text-zinc-600 uppercase tracking-widest mt-1">Instrument: Gold Spot • Leverage: 1:100</p>
+                      <h3 className="font-black text-4xl text-white italic tracking-tighter">XAU/USD <span className="text-zinc-700 not-italic ml-2 font-medium">Gold Spot</span></h3>
+                      <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] mt-2 flex items-center gap-3">
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                        OANDA EXECUTION NODE • LEVERAGE 1:100
+                      </p>
                    </div>
                 </div>
-                <div className="flex items-center gap-6">
-                   <div className="text-right">
-                      <p className="text-[10px] font-black text-zinc-700 uppercase tracking-widest">Live Price</p>
-                      <p className="text-2xl font-black text-emerald-500 tracking-tighter">2,738.50 <span className="text-xs font-bold opacity-60 ml-2">USD</span></p>
-                   </div>
+                <div className="hidden md:block text-right">
+                   <p className="text-[10px] font-black text-zinc-700 uppercase tracking-widest mb-1 italic">Real-time Feed</p>
+                   <p className="text-3xl font-black text-emerald-500 tracking-tighter drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]">2,738.50 <span className="text-xs font-bold opacity-40 ml-1">USD</span></p>
                 </div>
              </div>
 
-             <div className="relative group/chart">
+             <div className="relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-black/40 group/chart shadow-inner">
                 <MarketChart symbol="OANDA:XAUUSD" interval={gap} />
-                <div className="absolute bottom-4 left-4 bg-[#0c0c0c]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/5 text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
-                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                   Market Live Connection
+                <div className="absolute top-6 right-6 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                    <i data-lucide="shield-check" className="w-3 h-3 text-emerald-500"></i>
+                    <span className="text-[8px] font-black text-zinc-300 uppercase tracking-widest">Secure Link Established</span>
                 </div>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                 <button 
                   onClick={handleGoldAnalysis}
                   disabled={isAnalyzingGold}
-                  className="py-6 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 disabled:opacity-50 text-white font-black rounded-3xl transition-all shadow-2xl shadow-emerald-600/20 uppercase tracking-[0.3em] text-xs flex items-center justify-center gap-4 group/btn"
+                  className="group/btn relative py-8 bg-zinc-900 overflow-hidden font-black rounded-[2.5rem] transition-all duration-500 shadow-2xl hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                 >
-                   {isAnalyzingGold ? (
-                     <div key="loading" className="flex items-center gap-4">
-                       <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                       Calculating Alpha Signals...
-                     </div>
-                   ) : (
-                     <div key="idle" className="flex items-center gap-4">
-                       <i data-lucide="brain-cog" className="w-5 h-5 group-hover/btn:rotate-45 transition-transform"></i>
-                       Compute Neural Analysis
-                     </div>
-                   )}
-                </button>
-                <div className="flex gap-4">
-                   <div className="flex-1 bg-[#121212] border border-white/5 rounded-3xl p-6 flex flex-col justify-center text-center shadow-inner">
-                      <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Market Gap</p>
-                      <p className="text-white font-black text-2xl italic">{gap}</p>
+                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-90 group-hover/btn:opacity-100 transition-opacity"></div>
+                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+                   
+                   <div className="relative flex items-center justify-center gap-5 text-white uppercase tracking-[0.3em] text-xs">
+                      {isAnalyzingGold ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                          <span>Quantum Signal Search...</span>
+                        </>
+                      ) : (
+                        <>
+                          <i data-lucide="brain-cog" className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-1000"></i>
+                          <span>Neural Alpha Scan</span>
+                        </>
+                      )}
                    </div>
-                   <div className="flex-1 bg-[#121212] border border-white/5 rounded-3xl p-6 flex flex-col justify-center text-center shadow-inner">
-                      <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Alpha Strength</p>
-                      <p className="text-emerald-500 font-black text-2xl">94.2%</p>
+                </button>
+                
+                <div className="grid grid-cols-2 gap-4">
+                   <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-white/[0.04] transition-colors">
+                      <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-emerald-500 transition-colors">Network Gap</p>
+                      <p className="text-white font-black text-3xl italic tracking-tighter">{gap}</p>
+                   </div>
+                   <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-white/[0.04] transition-colors">
+                      <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-emerald-500 transition-colors">Confidence</p>
+                      <p className="text-emerald-500 font-black text-3xl tracking-tighter">94.2%</p>
                    </div>
                 </div>
              </div>
           </div>
         </div>
 
-        <div className="space-y-10">
+        {/* --- Side Analysis Column --- */}
+        <div className="lg:col-span-4 h-full">
           {goldAnalysis ? (
-            <div className={`bg-[#0c0c0c] border-2 rounded-[3.5rem] p-10 animate-fade-in relative overflow-hidden h-full shadow-3xl ${goldAnalysis.signal === 'BUY' ? 'border-emerald-500/30' : goldAnalysis.signal === 'SELL' ? 'border-red-500/30' : 'border-zinc-500/30'}`}>
-               <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                  <i data-lucide="target" className="w-48 h-48"></i>
+            <div className={`bg-[#0c0c0c] border-[3px] rounded-[4rem] p-12 h-full flex flex-col relative overflow-hidden shadow-3xl transition-all duration-700 ${goldAnalysis.signal === 'BUY' ? 'border-emerald-500/20 shadow-emerald-500/10' : goldAnalysis.signal === 'SELL' ? 'border-red-500/20 shadow-red-500/10' : 'border-zinc-500/20 shadow-zinc-500/10'}`}>
+               
+               <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+                  <i data-lucide={goldAnalysis.signal === 'BUY' ? 'trending-up' : goldAnalysis.signal === 'SELL' ? 'trending-down' : 'activity'} className="w-64 h-64"></i>
                </div>
-               <div className="relative z-10 space-y-10">
-                  <div className="flex items-center gap-5">
-                     <div className={`w-16 h-16 rounded-3xl flex items-center justify-center shadow-2xl ${goldAnalysis.signal === 'BUY' ? 'bg-emerald-500/10' : goldAnalysis.signal === 'SELL' ? 'bg-red-500/10' : 'bg-zinc-500/10'}`}>
-                        <i data-lucide={goldAnalysis.signal === 'BUY' ? 'arrow-up-right' : goldAnalysis.signal === 'SELL' ? 'arrow-down-left' : 'pause'} className={`w-8 h-8 ${goldAnalysis.signal === 'BUY' ? 'text-emerald-500' : goldAnalysis.signal === 'SELL' ? 'text-red-500' : 'text-zinc-500'}`}></i>
-                     </div>
-                     <div>
-                        <h4 className="text-zinc-500 font-black text-[10px] uppercase tracking-[0.3em]">AI Order Recommendation</h4>
-                        <p className={`text-2xl font-black italic uppercase tracking-tighter ${goldAnalysis.signal === 'BUY' ? 'text-emerald-500' : goldAnalysis.signal === 'SELL' ? 'text-red-500' : 'text-zinc-500'}`}>{goldAnalysis.decision}</p>
+
+               <div className="relative z-10 flex flex-col h-full space-y-12">
+                  <div className="space-y-6">
+                     <p className="text-zinc-600 font-black text-[10px] uppercase tracking-[0.4em]">Signal Vector</p>
+                     <div className="flex items-center gap-6">
+                        <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-2xl shrink-0 ${goldAnalysis.signal === 'BUY' ? 'bg-emerald-500/10 text-emerald-500 shadow-emerald-500/20' : goldAnalysis.signal === 'SELL' ? 'bg-red-500/10 text-red-500 shadow-red-500/20' : 'bg-zinc-500/10 text-zinc-500 shadow-zinc-500/20'}`}>
+                           <i data-lucide={goldAnalysis.signal === 'BUY' ? 'arrow-up-right' : goldAnalysis.signal === 'SELL' ? 'arrow-down-left' : 'pause'} className="w-10 h-10"></i>
+                        </div>
+                        <div>
+                           <p className={`text-4xl font-black italic uppercase tracking-tighter leading-none ${goldAnalysis.signal === 'BUY' ? 'text-emerald-500' : goldAnalysis.signal === 'SELL' ? 'text-red-500' : 'text-zinc-500'}`}>{goldAnalysis.signal}</p>
+                           <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest mt-2">Quantitative Decision</p>
+                        </div>
                      </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-5">
-                     <div className="bg-[#121212] p-6 rounded-3xl border border-white/5 shadow-inner">
-                        <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">Stop Loss</p>
-                        <p className="text-red-400 font-black text-xl italic">{goldAnalysis.sl}</p>
+                  <div className="space-y-6">
+                     <div className="flex justify-between items-end">
+                        <p className="text-zinc-600 font-black text-[10px] uppercase tracking-[0.4em]">Order Matrix</p>
+                        <span className="text-[9px] font-bold text-emerald-500/60 uppercase">Optimal Entry</span>
                      </div>
-                     <div className="bg-[#121212] p-6 rounded-3xl border border-white/5 shadow-inner">
-                        <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">Take Profit</p>
-                        <p className="text-emerald-400 font-black text-xl italic">{goldAnalysis.tp}</p>
+                     <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white/[0.02] p-8 rounded-[2.5rem] border border-white/5 flex justify-between items-center group/readout hover:bg-white/[0.04] transition-colors">
+                           <div>
+                              <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-1 group-hover/readout:text-red-500 transition-colors">Stop Loss</p>
+                              <p className="text-red-400 font-black text-2xl italic tracking-tighter">{goldAnalysis.sl}</p>
+                           </div>
+                           <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                              <i data-lucide="shield-alert" className="w-4 h-4 text-red-500"></i>
+                           </div>
+                        </div>
+                        <div className="bg-white/[0.02] p-8 rounded-[2.5rem] border border-white/5 flex justify-between items-center group/readout hover:bg-white/[0.04] transition-colors">
+                           <div>
+                              <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-1 group-hover/readout:text-emerald-500 transition-colors">Take Profit</p>
+                              <p className="text-emerald-400 font-black text-2xl italic tracking-tighter">{goldAnalysis.tp}</p>
+                           </div>
+                           <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                              <i data-lucide="target" className="w-5 h-5 text-emerald-500"></i>
+                           </div>
+                        </div>
                      </div>
                   </div>
 
-                  <div className="p-8 bg-[#080808] rounded-[2rem] border border-white/5">
-                     <p className="text-zinc-400 text-sm leading-relaxed font-bold italic">"{goldAnalysis.reason}"</p>
+                  <div className="flex-1 p-8 bg-zinc-900/40 rounded-[2.5rem] border border-white/5 flex flex-col justify-center relative group/reason">
+                     <div className="absolute top-4 right-6 text-zinc-800 group-hover/reason:text-emerald-500/20 transition-colors">
+                        <i data-lucide="quote" className="w-10 h-10"></i>
+                     </div>
+                     <p className="text-zinc-400 text-sm leading-relaxed font-bold italic relative z-10">"{goldAnalysis.reason}"</p>
                   </div>
 
-                  <button className="w-full py-6 bg-zinc-900 hover:bg-zinc-800 text-white font-black rounded-3xl transition-all uppercase tracking-[0.4em] text-[10px] border border-white/10 shadow-2xl">Exécuter l'Ordre Terminal</button>
+                  <button className="group/exec w-full py-8 bg-white text-black font-black rounded-[2.5rem] transition-all duration-500 uppercase tracking-[0.4em] text-[10px] hover:bg-emerald-500 hover:text-white hover:scale-[1.05] active:scale-95 shadow-2xl shadow-white/5">
+                    Execute Terminal Order
+                  </button>
                </div>
             </div>
           ) : (
-            <div className="bg-[#0c0c0c] border border-dashed border-white/5 rounded-[3.5rem] p-12 h-full flex flex-col items-center justify-center text-center space-y-8 group hover:border-emerald-500/20 transition-all duration-700">
-               <div className="w-24 h-24 bg-[#121212] rounded-[2rem] flex items-center justify-center text-zinc-700 mb-2 group-hover:scale-110 group-hover:text-emerald-500 transition-all shadow-inner">
-                  <i data-lucide="radar" className="w-12 h-12 animate-pulse"></i>
+            <div className="bg-[#0c0c0c] border border-dashed border-white/10 rounded-[4rem] p-16 h-full flex flex-col items-center justify-center text-center space-y-10 group hover:border-emerald-500/30 transition-all duration-1000">
+               <div className="relative">
+                  <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
+                  <div className="relative w-32 h-32 bg-[#121212] rounded-[3rem] flex items-center justify-center text-zinc-800 shadow-2xl border border-white/5 group-hover:scale-110 group-hover:text-emerald-500 transition-all duration-700">
+                    <i data-lucide="cpu" className="w-16 h-16 animate-pulse"></i>
+                  </div>
                </div>
-               <div className="space-y-4">
-                 <h4 className="text-white font-black text-2xl uppercase italic tracking-tighter">Prêt pour Analyse</h4>
-                 <p className="text-zinc-500 text-sm max-w-[200px] leading-relaxed font-medium">Sélectionnez votre unité de temps et lancez le moteur neuronal pour générer des signaux d'entrée optimisés.</p>
+               <div className="space-y-6">
+                 <h4 className="text-white font-black text-3xl uppercase italic tracking-tighter">Neural Engine <span className="text-emerald-500">Standby</span></h4>
+                 <p className="text-zinc-500 text-sm max-w-[240px] leading-relaxed font-medium mx-auto">Prêt pour la séquence d'analyse. Sélectionnez une unité de temps et synchronisez le moteur pour générer un vecteur de trading optimal.</p>
+               </div>
+               <div className="flex gap-2">
+                  <div className="w-1.5 h-1.5 bg-zinc-800 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-zinc-800 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-1.5 h-1.5 bg-zinc-800 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                </div>
             </div>
           )}
@@ -891,7 +940,7 @@ const App = () => {
   }, [view, transactions, simulations]);
 
   const addTransaction = async (t: Transaction) => {
-    const created = await apiCreateTransaction({ type: t.type, category: t.category, amount: t.amount, label: t.label, date: t.date });
+    const created = await apiCreateTransaction({ type: t.type, category: t.category, amount: t.amount, label: t.label, date: t.date }) as any;
     const newT = created._id
       ? { id: created._id, type: created.type, category: created.category, amount: created.amount, label: created.label, date: created.date }
       : t;
@@ -899,7 +948,7 @@ const App = () => {
   };
 
   const addSimulation = async (s: Simulation) => {
-    const created = await apiCreateSimulation({ type: s.type, amount: s.amount, duration: s.duration, risk: s.risk, date: s.date, result: s.result, signal: s.signal, sl: s.sl, tp: s.tp });
+    const created = await apiCreateSimulation({ type: s.type, amount: s.amount, duration: s.duration, risk: s.risk, date: s.date, result: s.result, signal: s.signal, sl: s.sl, tp: s.tp }) as any;
     const newS = created._id ? { ...s, id: created._id } : s;
     setSimulations(prev => [newS, ...prev]);
   };
