@@ -1,10 +1,5 @@
-import json
-import base64
+import csv
 import io
-import re
-import pandas as pd
-import pdfplumber
-from http.server import BaseHTTPRequestHandler
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -32,16 +27,24 @@ class handler(BaseHTTPRequestHandler):
         try:
             if filename.lower().endswith('.csv'):
                 content = file_bytes.decode('utf-8')
-                df = pd.read_csv(io.StringIO(content))
-                # Basic normalization
-                for _, row in df.iterrows():
-                    amt = float(str(row.get('Montant', row.get('Amount', 0))).replace(',', '.').replace(' ', ''))
+                f = io.StringIO(content)
+                reader = csv.DictReader(f)
+                # Map headers to lower for easier matching
+                for row in reader:
+                    # Case-insensitive header lookup
+                    r = {k.lower(): v for k, v in row.items()}
+                    raw_amt = r.get('montant', r.get('amount', r.get('debit', r.get('credit', '0'))))
+                    try:
+                        amt = float(str(raw_amt).replace(',', '.').replace(' ', '').replace('€', ''))
+                    except: amt = 0
+                    
+                    label = r.get('libellé', r.get('label', r.get('description', 'Transaction')))
                     transactions.append({
                         "type": "Income" if amt >= 0 else "Expense",
                         "amount": amt,
-                        "label": str(row.get('Libellé', row.get('Label', 'Transaction'))),
-                        "date": str(row.get('Date', '')),
-                        "category": str(row.get('Catégorie', 'Business'))
+                        "label": label,
+                        "date": r.get('date', ''),
+                        "category": r.get('catégorie', r.get('category', self._detect_category(label)))
                     })
             else:
                 # PDF parsing with pdfplumber
