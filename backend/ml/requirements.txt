@@ -1,0 +1,6 @@
+scikit-learn
+xgboost
+pandas
+joblib
+numpy
+PyPDF2
