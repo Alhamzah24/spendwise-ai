@@ -52,35 +52,68 @@ class handler(BaseHTTPRequestHandler):
                         "category": r.get('catégorie', r.get('category', self._detect_category(label)))
                     })
             else:
-                # PDF parsing with pdfplumber
+                # PDF parsing with pdfplumber (Robuste logic from predict.py)
                 with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+                    text_lines = []
                     for page in pdf.pages:
-                        text = page.extract_text()
-                        if not text: continue
-                        
-                        # Use same logic as our local predict.py
-                        lines = text.split('\n')
-                        for line in lines:
-                            # Search for amount at end of line
-                            amt_match = re.search(r'([-+]?\d{1,3}(?:\s?\d{3})*[,.]\d{2})\s*€?\s*$', line)
-                            date_match = re.search(r'(\d{2}[./]\d{2}[./]\d{2,4})', line)
+                        page_text = page.extract_text(layout=True)
+                        if page_text:
+                            text_lines.extend(page_text.split('\n'))
+                    
+                    # Dynamically find the exact midpoint between the DEBIT and CREDIT columns
+                    credit_col_index = 80 # Safe default guess
+                    for line in text_lines:
+                        if "DEBIT" in line and "CREDIT" in line:
+                            debit_pos = line.find("DEBIT")
+                            credit_pos = line.find("CREDIT")
+                            credit_col_index = (debit_pos + credit_pos) // 2
+                            break
                             
-                            if amt_match and date_match:
-                                raw_amt = float(amt_match.group(1).replace(' ', '').replace(',', '.'))
-                                label = line[date_match.end():amt_match.start()].strip()
+                    for line in text_lines:
+                        if len(line.strip()) < 10: continue
+                        
+                        date_match = re.search(r'(\d{2}[-/.]\d{2}(?:[-/.]\d{2,4})?)', line)
+                        amt_match = re.search(r'([-+]?(?:\d{1,3}(?:\s\d{3})*|\d+)[.,]\d{2})(?:\s*€)?\s*$', line)
+                        
+                        if date_match and amt_match:
+                            d_str = date_match.group(1)
+                            a_str = amt_match.group(1).replace(' ', '').replace(',', '.')
+                            
+                            try:
+                                amt = float(a_str)
+                            except: continue
                                 
-                                if "SOLDE" in label.upper() or len(label) < 2: continue
-                                
-                                dp = date_match.group(1).replace('.', '/').split('/')
-                                date_str = f"20{dp[2][-2:]}-{dp[1].zfill(2)}-{dp[0].zfill(2)}"
-                                
-                                transactions.append({
-                                    "type": "Income" if raw_amt >= 0 else "Expense",
-                                    "amount": raw_amt,
-                                    "label": label,
-                                    "date": date_str,
-                                    "category": self._detect_category(label)
-                                })
+                            amt_pos = line.rfind(amt_match.group(1))
+                            start_idx = date_match.end()
+                            label_raw = line[start_idx:amt_pos].strip()
+                            
+                            # Clean up Date Valeur from the end of the label
+                            label_raw = re.sub(r'\d{2}[-/.]\d{2}(?:[-/.]\d{2,4})?[. ]*$', '', label_raw).strip()
+                            label_raw = re.sub(r'^\s*-\s*', '', label_raw).strip()
+                            if not label_raw: label_raw = "Transaction Inconnue"
+                            
+                            label_upper = label_raw.upper()
+                            if any(x in label_upper for x in ["SOLDE", "VOTRE FAVEUR"]): continue
+                            
+                            # SPATIAL DETERMINATION OF DEBIT VS CREDIT
+                            if amt_pos < credit_col_index:
+                                amt = -abs(amt) # Debit
+                            else:
+                                amt = abs(amt) # Credit
+                            
+                            # Format date
+                            parts = re.split(r'[-/.]', d_str)
+                            year = parts[2] if len(parts) == 3 else "2026"
+                            if len(year) == 2: year = "20" + year
+                            f_date = f"{year}-{parts[1].zfill(2)}-{parts[0].zfill(2)}"
+                            
+                            transactions.append({
+                                "type": "Income" if amt > 0 else "Expense",
+                                "amount": amt,
+                                "label": label_raw[:50],
+                                "date": f_date,
+                                "category": self._detect_category(label_raw)
+                            })
 
             self._send_json(200, {"filename": filename, "transactions": transactions})
 
