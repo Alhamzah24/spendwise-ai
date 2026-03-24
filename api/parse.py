@@ -69,7 +69,18 @@ class handler(BaseHTTPRequestHandler):
                             credit_col_index = (debit_pos + credit_pos) // 2
                             break
                             
+                    # Flag to only start parsing after the 'DETAIL DES OPERATIONS' section
+                    is_detail_section = False
+                    
                     for line in text_lines:
+                        line_upper = line.upper()
+                        
+                        # Detect section entry
+                        if any(x in line_upper for x in ["DETAIL DES OPERATIONS", "RELEVE DE COMPTE", "LISTE DES OPERATIONS"]):
+                            is_detail_section = True
+                            continue
+                        
+                        if not is_detail_section: continue
                         if len(line.strip()) < 10: continue
                         
                         date_match = re.search(r'(\d{2}[-/.]\d{2}(?:[-/.]\d{2,4})?)', line)
@@ -95,19 +106,15 @@ class handler(BaseHTTPRequestHandler):
                             if not label_raw: label_raw = "Transaction Inconnue"
                             
                             label_upper = label_raw.upper()
-                            if any(x in label_upper for x in ["SOLDE", "VOTRE FAVEUR"]): continue
+                            # Ignore summary lines / sub-totals
+                            if any(x in label_upper for x in ["SOLDE", "VOTRE FAVEUR", "REPORT", "TOTAL DES"]): continue
                             
-                            # SIGN DETECTION (Prioritize explicit sign over spatial)
-                            if sign == '-':
-                                amt = -abs(amt)
-                            elif sign == '+':
-                                amt = abs(amt)
+                            # Polarity
+                            if sign == '-': amt = -abs(amt)
+                            elif sign == '+': amt = abs(amt)
                             else:
-                                # Fallback to spatial if no explicit sign
-                                if amt_pos < credit_col_index:
-                                    amt = -abs(amt)
-                                else:
-                                    amt = abs(amt)
+                                if amt_pos < credit_col_index: amt = -abs(amt)
+                                else: amt = abs(amt)
                             
                             # Format date
                             parts = re.split(r'[-/.]', d_str)
