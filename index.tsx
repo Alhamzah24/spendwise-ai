@@ -78,10 +78,10 @@ const Sidebar = ({ activeView, setView }: { activeView: View; setView: (v: View)
     <aside className="w-20 lg:w-72 bg-white h-full flex flex-col border-r border-slate-200 transition-all duration-300 z-50">
       <div className="p-8 mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#0AB4D8] rounded-xl flex items-center justify-center shadow-[0_0_25px_rgba(10,180,216,0.3)]">
+          <div className="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center shadow-[0_0_25px_rgba(10,180,216,0.3)]">
              <i data-lucide="shield-check" className="w-6 h-6 text-white"></i>
           </div>
-          <h1 className="text-xl font-black text-[#0A2540] tracking-tighter hidden lg:block uppercase italic">SPENDWISE</h1>
+          <h1 className="text-xl font-black text-slate-900 tracking-tighter hidden lg:block uppercase italic">SPENDWISE</h1>
         </div>
       </div>
 
@@ -92,11 +92,11 @@ const Sidebar = ({ activeView, setView }: { activeView: View; setView: (v: View)
             onClick={() => setView(item.id as View)}
             className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group ${
               activeView === item.id 
-                ? 'bg-[#0AB4D8]/10 text-[#0AB4D8] border border-[#0AB4D8]/30 shadow-lg' 
-                : 'text-slate-500 hover:bg-[#EBF5FB] hover:text-[#0A2540]'
+                ? 'bg-sky-100 text-sky-600 border border-sky-400 shadow-lg' 
+                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
-            <i data-lucide={item.icon} className={`w-5 h-5 ${activeView === item.id ? 'text-[#0AB4D8]' : 'text-slate-500 group-hover:text-[#0A2540]'}`}></i>
+            <i data-lucide={item.icon} className={`w-5 h-5 ${activeView === item.id ? 'text-sky-600' : 'text-slate-500 group-hover:text-slate-900'}`}></i>
             <span className="hidden lg:block font-bold tracking-tight uppercase text-xs">{item.label}</span>
           </button>
         ))}
@@ -166,7 +166,7 @@ const MarketChart = ({ symbol, interval }: { symbol: string, interval: string })
     };
   }, [symbol, interval]);
 
-  return <div ref={containerRef} className="rounded-3xl overflow-hidden border border-[#1a1a1a] bg-[#F0F8FF]" />;
+  return <div ref={containerRef} className="rounded-3xl overflow-hidden border border-[#1a1a1a] bg-sky-50" />;
 };
 
 // --- Views ---
@@ -265,20 +265,20 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
     <div className="p-8 max-w-7xl mx-auto space-y-10 animate-fade-in relative">
       
       {showBankModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#F0F8FF]/90 backdrop-blur-md animate-fade-in p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-sky-50/90 backdrop-blur-md animate-fade-in p-6">
            <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 max-w-xl w-full shadow-[0_0_100px_rgba(16,185,129,0.1)] relative overflow-hidden">
                {bankStep === 'select' && (
                   <div className="space-y-6">
                       <div className="flex justify-between items-center mb-8">
-                          <h3 className="text-2xl font-black text-[#0A2540] italic tracking-tighter">Synchronisation Bancaire</h3>
-                          <button onClick={() => setShowBankModal(false)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-white transition-all"><i data-lucide="x" className="w-5 h-5"></i></button>
+                          <h3 className="text-2xl font-black text-slate-900 italic tracking-tighter">Synchronisation Bancaire</h3>
+                          <button onClick={() => setShowBankModal(false)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 transition-all"><i data-lucide="x" className="w-5 h-5"></i></button>
                       </div>
                       <p className="text-slate-500 text-sm">Sélectionnez votre établissement pour configurer l'Open Banking et l'import automatique des transactions.</p>
                       <div className="grid grid-cols-2 gap-4">
                          {['Revolut', 'Boursorama', 'Société Générale', 'BNP Paribas', 'LCL'].map(b => (
-                            <button key={b} onClick={() => handleBankConnect(b)} className="p-4 bg-[#E8F4FD] border border-slate-200 hover:border-[#0AB4D8]/40 rounded-2xl flex items-center justify-between group transition-all">
-                               <span className="font-bold text-[#0A2540] group-hover:text-[#0AB4D8]">{b}</span>
-                               <i data-lucide="chevron-right" className="w-4 h-4 text-slate-400 group-hover:text-[#0AB4D8]"></i>
+                            <button key={b} onClick={() => handleBankConnect(b)} className="p-4 bg-slate-100 border border-slate-200 hover:border-sky-400 rounded-2xl flex items-center justify-between group transition-all">
+                               <span className="font-bold text-slate-900 group-hover:text-sky-600">{b}</span>
+                               <i data-lucide="chevron-right" className="w-4 h-4 text-slate-400 group-hover:text-sky-600"></i>
                             </button>
                          ))}
                       </div>
@@ -287,20 +287,20 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
 
                {bankStep === 'connecting' && (
                   <div className="py-12 text-center space-y-6">
-                     <div className="w-20 h-20 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin mx-auto shadow-[0_0_30px_rgba(16,185,129,0.2)]"></div>
-                     <h3 className="text-xl font-black text-[#0A2540] italic">Connexion Sécurisée en cours</h3>
-                     <p className="text-[#0AB4D8] font-bold uppercase tracking-[0.2em] text-xs animate-pulse">Synchronisation avec {selectedBank} via API...</p>
+                     <div className="w-20 h-20 border-4 border-sky-200 border-t-sky-500 rounded-full animate-spin mx-auto shadow-[0_0_30px_rgba(16,185,129,0.2)]"></div>
+                     <h3 className="text-xl font-black text-slate-900 italic">Connexion Sécurisée en cours</h3>
+                     <p className="text-sky-600 font-bold uppercase tracking-[0.2em] text-xs animate-pulse">Synchronisation avec {selectedBank} via API...</p>
                      <p className="text-slate-400 text-xs">Chiffrement AES-256 actif. Veuillez patienter.</p>
                   </div>
                )}
 
                {bankStep === 'success' && (
                   <div className="py-12 text-center space-y-6">
-                     <div className="w-20 h-20 bg-[#0AB4D8]/20 text-[#0AB4D8] rounded-full flex items-center justify-center mx-auto mx-auto shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                     <div className="w-20 h-20 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center mx-auto mx-auto shadow-[0_0_30px_rgba(16,185,129,0.4)]">
                         <i data-lucide="check" className="w-10 h-10"></i>
                      </div>
-                     <h3 className="text-2xl font-black text-[#0AB4D8] italic">Connexion Établie !</h3>
-                     <p className="text-[#1a4a6d] text-sm">Les 30 derniers jours de transactions ont été importés et analysés automatiquement dans SpendWise.</p>
+                     <h3 className="text-2xl font-black text-sky-600 italic">Connexion Établie !</h3>
+                     <p className="text-slate-700 text-sm">Les 30 derniers jours de transactions ont été importés et analysés automatiquement dans SpendWise.</p>
                   </div>
                )}
            </div>
@@ -309,22 +309,22 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
 
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Executive Suite</h2>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">Executive Suite</h2>
           <p className="text-slate-500 font-medium">Flux financiers consolidés en temps réel.</p>
         </div>
         <div className="flex gap-10 items-center">
             <button 
                 onClick={() => setShowBankModal(true)} 
-                className="group flex flex-col items-end gap-1 px-6 py-3 bg-gradient-to-l from-emerald-500/10 to-transparent border-r-2 border-emerald-500 rounded-xl hover:bg-[#0AB4D8]/20 transition-all cursor-pointer"
+                className="group flex flex-col items-end gap-1 px-6 py-3 bg-gradient-to-l from-sky-100 to-transparent border-r-2 border-sky-400 rounded-xl hover:bg-sky-100 transition-all cursor-pointer"
             >
-               <span className="flex items-center gap-2 text-[#0AB4D8] font-black text-sm uppercase tracking-widest leading-none">
+               <span className="flex items-center gap-2 text-sky-600 font-black text-sm uppercase tracking-widest leading-none">
                   <i data-lucide="landmark" className="w-4 h-4"></i> Synchro Bancaire
                </span>
                <span className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Connectez vos comptes</span>
             </button>
             <div className="text-right">
                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Solde Global</p>
-               <h3 className="text-3xl font-black text-[#0AB4D8]">{balance.toLocaleString('fr-FR')} €</h3>
+               <h3 className="text-3xl font-black text-sky-600">{balance.toLocaleString('fr-FR')} €</h3>
             </div>
         </div>
       </div>
@@ -334,32 +334,32 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
           <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden group">
              <div className="flex justify-between items-center mb-10">
                 <div className="flex items-center gap-3">
-                   <div className="w-12 h-12 bg-[#0AB4D8]/10 rounded-2xl flex items-center justify-center">
-                      <i data-lucide="file-up" className="w-6 h-6 text-[#0AB4D8]"></i>
+                   <div className="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center">
+                      <i data-lucide="file-up" className="w-6 h-6 text-sky-600"></i>
                    </div>
-                   <h3 className="font-black text-2xl text-white">Import Auto Relevé Bancaire</h3>
+                   <h3 className="font-black text-2xl text-slate-900">Import Auto Relevé Bancaire</h3>
                 </div>
              </div>
              
              <input type="file" className="hidden" ref={fileInputRef} onChange={handleFileChange} accept=".pdf,.xml,.csv,.xlsx" />
 
              <div 
-               className="border-2 border-dashed border-[#222] rounded-[2rem] p-12 text-center space-y-6 group-hover:border-emerald-500/40 transition-all cursor-pointer bg-[#EEF7FF]/50 hover:bg-[#EEF7FF]" 
+               className="border-2 border-dashed border-slate-300 rounded-[2rem] p-12 text-center space-y-6 group-hover:border-sky-400/60 transition-all cursor-pointer bg-sky-50/50 hover:bg-sky-50" 
                onClick={triggerUpload}
              >
                 {isAnalyzing ? (
                    <div key="analyzing" className="space-y-6 py-4">
-                      <div className="w-16 h-16 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin mx-auto"></div>
-                      <p className="text-[#0AB4D8] font-black tracking-[0.2em] uppercase text-xs animate-pulse">Isolation Forest Scoring active...</p>
+                      <div className="w-16 h-16 border-4 border-sky-200 border-t-sky-500 rounded-full animate-spin mx-auto"></div>
+                      <p className="text-sky-600 font-black tracking-[0.2em] uppercase text-xs animate-pulse">Isolation Forest Scoring active...</p>
                    </div>
                 ) : (
                    <div key="idle">
-                      <div className="w-20 h-20 bg-[#E8F4FD] rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-400 group-hover:text-[#0AB4D8] group-hover:scale-110 transition-all shadow-inner">
+                      <div className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-400 group-hover:text-sky-600 group-hover:scale-110 transition-all shadow-inner">
                          <i data-lucide="scan-line" className="w-10 h-10"></i>
                       </div>
-                      <h4 className="font-black text-xl text-[#0A2540] italic">Déposez votre Relevé (PDF/CSV)</h4>
+                      <h4 className="font-black text-xl text-slate-900 italic">Déposez votre Relevé (PDF/CSV)</h4>
                       <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed">Notre IA extraira, nettoiera et catégorisera automatiquement toutes vos transactions.</p>
-                      <button className="mt-6 px-10 py-4 bg-[#0AB4D8] text-[#0a0a0a] font-black rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-emerald-400 transition-all shadow-xl shadow-[#0AB4D8]/10">Sélectionner fichier</button>
+                      <button className="mt-6 px-10 py-4 bg-sky-500 text-slate-900 font-black rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-emerald-400 transition-all shadow-xl shadow-sky-200">Sélectionner fichier</button>
                    </div>
                 )}
              </div>
@@ -374,26 +374,26 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
              {reportResult && !isAnalyzing && !reportError && (
                 <div className="mt-10 p-8 bg-white border border-slate-200 rounded-3xl animate-fade-in space-y-6 shadow-inner">
                    <div className="flex items-center gap-3 pb-4 border-b border-slate-200">
-                      <i data-lucide="cpu" className="w-4 h-4 text-[#0AB4D8]"></i>
-                      <p className="text-[#1a4a6d] font-black text-xs uppercase tracking-widest">{reportResult.filename}</p>
+                      <i data-lucide="cpu" className="w-4 h-4 text-sky-600"></i>
+                      <p className="text-slate-700 font-black text-xs uppercase tracking-widest">{reportResult.filename}</p>
                    </div>
                    
                    <div className="flex items-center gap-6">
-                      <div className={`w-24 h-24 rounded-[2rem] flex items-center justify-center flex-col shrink-0 ${reportResult.status === 'HEALTHY' ? 'bg-[#0AB4D8]/10 text-[#0AB4D8] border border-[#0AB4D8]/30' : 'bg-red-50 text-red-500 border border-red-200'}`}>
+                      <div className={`w-24 h-24 rounded-[2rem] flex items-center justify-center flex-col shrink-0 ${reportResult.status === 'HEALTHY' ? 'bg-sky-100 text-sky-600 border border-sky-400' : 'bg-red-50 text-red-500 border border-red-300'}`}>
                          <span className="text-3xl font-black">{reportResult.score}</span>
                          <span className="text-[9px] uppercase tracking-widest font-black opacity-80 mt-1">/ 100</span>
                       </div>
                       <div>
-                         <h4 className="text-xl font-black italic text-white uppercase tracking-tighter mb-2">Scoring de Santé</h4>
-                         <span className={`px-3 py-1 text-[10px] font-black tracking-widest rounded-full uppercase ${reportResult.status === 'HEALTHY' ? 'bg-[#0AB4D8] text-[#0a0a0a]' : 'bg-red-500 text-white'}`}>{reportResult.status}</span>
+                         <h4 className="text-xl font-black italic text-slate-900 uppercase tracking-tighter mb-2">Scoring de Santé</h4>
+                         <span className={`px-3 py-1 text-[10px] font-black tracking-widest rounded-full uppercase ${reportResult.status === 'HEALTHY' ? 'bg-sky-500 text-slate-900' : 'bg-red-500 text-white'}`}>{reportResult.status}</span>
                       </div>
                    </div>
 
                    <div className="space-y-3 pt-4">
                       {reportResult.suggestions?.map((s, i) => (
-                         <div key={i} className="flex gap-3 bg-[#E8F4FD] p-4 rounded-xl border border-slate-200">
-                            <i data-lucide="check-circle" className="w-5 h-5 text-[#0AB4D8] shrink-0"></i>
-                            <p className="text-sm font-bold text-[#0A2540]">{s}</p>
+                         <div key={i} className="flex gap-3 bg-slate-100 p-4 rounded-xl border border-slate-200">
+                            <i data-lucide="check-circle" className="w-5 h-5 text-sky-600 shrink-0"></i>
+                            <p className="text-sm font-bold text-slate-900">{s}</p>
                          </div>
                       ))}
                    </div>
@@ -403,24 +403,24 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
 
           <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8">
             <div className="flex justify-between items-center mb-8">
-               <h3 className="font-black text-xl text-[#0A2540] italic">Flux de Trésorerie Récents</h3>
+               <h3 className="font-black text-xl text-slate-900 italic">Flux de Trésorerie Récents</h3>
             </div>
             <div className="space-y-4">
               {transactions.length === 0 ? (
-                <div className="py-20 text-center text-slate-300 italic border border-dashed border-slate-200 rounded-3xl">Aucune donnée transactionnelle</div>
+                <div className="py-20 text-center text-slate-500 italic border border-dashed border-slate-200 rounded-3xl">Aucune donnée transactionnelle</div>
               ) : (
                 transactions.slice(0, 5).map(t => (
-                  <div key={t.id} className="flex items-center justify-between p-5 bg-[#EEF7FF] rounded-[1.5rem] border border-slate-200 hover:border-[#0AB4D8]/30 transition-all">
+                  <div key={t.id} className="flex items-center justify-between p-5 bg-sky-50 rounded-[1.5rem] border border-slate-200 hover:border-sky-400 transition-all">
                     <div className="flex items-center gap-5">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${t.type === 'Income' ? 'bg-[#0AB4D8]/10 text-[#0AB4D8]' : 'bg-red-50 text-red-500'}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${t.type === 'Income' ? 'bg-sky-100 text-sky-600' : 'bg-red-50 text-red-500'}`}>
                         <i data-lucide={t.type === 'Income' ? 'trending-up' : 'trending-down'} className="w-6 h-6"></i>
                       </div>
                       <div>
-                        <p className="font-black text-white text-lg">{t.label}</p>
+                        <p className="font-black text-slate-800 text-lg">{t.label}</p>
                         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{t.category} — {t.date}</p>
                       </div>
                     </div>
-                    <p className={`text-xl font-black ${t.type === 'Income' ? 'text-[#0AB4D8]' : 'text-[#0A2540]'}`}>
+                    <p className={`text-xl font-black ${t.type === 'Income' ? 'text-sky-600' : 'text-slate-900'}`}>
                       {t.type === 'Income' ? '+' : '-'}{Math.abs(t.amount).toFixed(2)}€
                     </p>
                   </div>
@@ -433,30 +433,30 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
         <div className="space-y-8">
           <div className="bg-gradient-to-br from-[#121212] to-[#080808] border border-slate-200 rounded-[2.5rem] p-10 text-center space-y-6 shadow-2xl relative overflow-hidden group">
              <i data-lucide="gem" className="w-16 h-16 text-amber-600 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
-             <h3 className="font-black text-2xl text-[#0A2540] italic">SpendWise Private</h3>
+             <h3 className="font-black text-2xl text-slate-900 italic">SpendWise Private</h3>
              <p className="text-slate-500 text-sm leading-relaxed">Accédez aux marchés dérivés, cryptomonnaies et métaux précieux avec un effet de levier institutionnel.</p>
-             <button className="w-full py-5 bg-gradient-to-r from-amber-500 to-orange-600 text-[#0A2540] font-black rounded-2xl shadow-xl shadow-orange-500/30 uppercase tracking-[0.2em] text-[10px]">Upgrade to Elite</button>
+             <button className="w-full py-5 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-900 font-black rounded-2xl shadow-xl shadow-orange-500/30 uppercase tracking-[0.2em] text-[10px]">Upgrade to Elite</button>
              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-amber-500/5 blur-[80px] rounded-full"></div>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 space-y-8">
-            <h3 className="font-black text-xl text-[#0A2540] italic uppercase tracking-tighter">Monitoring de Santé</h3>
+            <h3 className="font-black text-xl text-slate-900 italic uppercase tracking-tighter">Monitoring de Santé</h3>
             <div className="space-y-8">
               <div>
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-3">
-                  <span className="text-slate-500">Ratio d'Épargne</span>
-                  <span className="text-[#0AB4D8]">{savingsRatio}%</span>
+                  <span className="text-slate-600">Ratio d'Épargne</span>
+                  <span className="text-sky-600">{savingsRatio}%</span>
                 </div>
-                <div className="w-full bg-[#E8F4FD] h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
-                  <div className="bg-[#0AB4D8] h-full rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-1000" style={{ width: `${savingsRatio}%` }}></div>
+                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
+                  <div className="bg-sky-500 h-full rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-1000" style={{ width: `${savingsRatio}%` }}></div>
                 </div>
               </div>
               <div>
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-3">
-                  <span className="text-slate-500">Exposition Investissement</span>
+                  <span className="text-slate-600">Exposition Investissement</span>
                   <span className="text-amber-600">{investmentRatio}%</span>
                 </div>
-                <div className="w-full bg-[#E8F4FD] h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
+                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
                   <div className="bg-amber-500 h-full rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all duration-1000" style={{ width: `${investmentRatio}%` }}></div>
                 </div>
               </div>
@@ -494,23 +494,23 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-12 animate-fade-in">
       <div className="mb-12">
-        <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Saisie Transactionnelle</h2>
+        <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">Saisie Transactionnelle</h2>
         <p className="text-slate-500 font-medium">Contrôle manuel des entrées et sorties de fonds.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="bg-white border border-slate-200 p-12 rounded-[3rem] shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="flex bg-[#EEF7FF] p-2 rounded-2xl border border-slate-200">
+            <div className="flex bg-sky-50 p-2 rounded-2xl border border-slate-200">
               <button 
                 type="button" 
                 onClick={() => setType('Expense')}
-                className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${type === 'Expense' ? 'bg-[#CCE6F4] text-white shadow-xl' : 'text-slate-400 hover:text-[#1a4a6d]'}`}
+                className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${type === 'Expense' ? 'bg-sky-500 text-white shadow-xl' : 'text-slate-400 hover:text-slate-700'}`}
               >Dépense</button>
               <button 
                 type="button" 
                 onClick={() => setType('Income')}
-                className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${type === 'Income' ? 'bg-[#CCE6F4] text-white shadow-xl' : 'text-slate-400 hover:text-[#1a4a6d]'}`}
+                className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${type === 'Income' ? 'bg-sky-500 text-white shadow-xl' : 'text-slate-400 hover:text-slate-700'}`}
               >Revenu</button>
             </div>
 
@@ -519,7 +519,7 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
                 <label className="text-[10px] font-black uppercase text-slate-500 tracking-[0.2em]">Montant Brut (€)</label>
                 <input 
                   type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)}
-                  className="w-full bg-[#E8F4FD] border border-slate-200 rounded-2xl p-5 text-white focus:border-emerald-500/50 outline-none transition-all text-xl font-black"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-2xl p-5 text-slate-900 focus:border-sky-400 outline-none transition-all text-xl font-black"
                   placeholder="0.00"
                 />
               </div>
@@ -527,7 +527,7 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
                 <label className="text-[10px] font-black uppercase text-slate-500 tracking-[0.2em]">Date Valeur</label>
                 <input 
                   type="date" value={date} onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-[#E8F4FD] border border-slate-200 rounded-2xl p-5 text-white focus:border-emerald-500/50 outline-none transition-all font-bold"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-2xl p-5 text-slate-900 focus:border-sky-400 outline-none transition-all font-bold"
                 />
               </div>
             </div>
@@ -536,7 +536,7 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
               <label className="text-[10px] font-black uppercase text-slate-500 tracking-[0.2em]">Description / Bénéficiaire</label>
               <input 
                 type="text" value={label} onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-[#E8F4FD] border border-slate-200 rounded-2xl p-5 text-white focus:border-emerald-500/50 outline-none transition-all font-bold"
+                className="w-full bg-slate-100 border border-slate-200 rounded-2xl p-5 text-slate-900 focus:border-sky-400 outline-none transition-all font-bold"
                 placeholder="ex: Versement Dividendes"
               />
             </div>
@@ -545,7 +545,7 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
               <label className="text-[10px] font-black uppercase text-slate-500 tracking-[0.2em]">Nature de l'opération</label>
               <select 
                 value={category} onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-[#E8F4FD] border border-slate-200 rounded-2xl p-5 text-white focus:border-emerald-500/50 outline-none appearance-none transition-all font-bold"
+                className="w-full bg-slate-100 border border-slate-200 rounded-2xl p-5 text-slate-900 focus:border-sky-400 outline-none appearance-none transition-all font-bold"
               >
                 <option>Business</option>
                 <option>Immobilier</option>
@@ -556,7 +556,7 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
               </select>
             </div>
 
-            <button type="submit" className="w-full py-6 bg-[#0AB4D8] hover:bg-[#0AB4D8] text-[#0A2540] font-black rounded-[1.5rem] transition-all shadow-xl shadow-emerald-600/10 uppercase tracking-[0.3em] text-xs">
+            <button type="submit" className="w-full py-6 bg-sky-500 hover:bg-sky-500 text-slate-900 font-black rounded-[1.5rem] transition-all shadow-xl shadow-sky-200 uppercase tracking-[0.3em] text-xs">
               Valider l'Opération
             </button>
           </form>
@@ -567,20 +567,20 @@ const TransactionsView = ({ onAddTransaction, transactions }: { onAddTransaction
               <h3 className="font-black text-xl mb-8 italic">Audit des dernières saisies</h3>
               <div className="space-y-4 max-h-[600px] overflow-y-auto pr-3 custom-scroll">
                  {transactions.length === 0 ? (
-                    <div className="py-24 text-center text-slate-200 font-black uppercase tracking-widest italic opacity-50">Journal vide</div>
+                    <div className="py-24 text-center text-slate-400 font-black uppercase tracking-widest italic opacity-50">Journal vide</div>
                  ) : (
                     transactions.map(t => (
-                       <div key={t.id} className="flex items-center justify-between p-6 bg-[#EEF7FF] rounded-3xl border border-slate-200 hover:border-[#0AB4D8]/40 transition-all group">
+                       <div key={t.id} className="flex items-center justify-between p-6 bg-sky-50 rounded-3xl border border-slate-200 hover:border-sky-400 transition-all group">
                           <div className="flex items-center gap-5">
-                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${t.type === 'Income' ? 'bg-[#0AB4D8]/10 text-[#0AB4D8]' : 'bg-red-50 text-red-500'}`}>
+                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${t.type === 'Income' ? 'bg-sky-100 text-sky-600' : 'bg-red-50 text-red-500'}`}>
                                 <i data-lucide={t.type === 'Income' ? 'chevron-up' : 'chevron-down'} className="w-6 h-6"></i>
                              </div>
                              <div>
-                                <p className="font-black text-white text-lg group-hover:text-[#0AB4D8] transition-colors italic">{t.label}</p>
+                                <p className="font-black text-slate-800 text-lg group-hover:text-sky-600 transition-colors italic">{t.label}</p>
                                 <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">{t.category} — {t.date}</p>
                              </div>
                           </div>
-                          <p className={`font-black text-xl ${t.type === 'Income' ? 'text-[#0AB4D8]' : 'text-[#1a4a6d]'}`}>
+                          <p className={`font-black text-xl ${t.type === 'Income' ? 'text-sky-600' : 'text-slate-700'}`}>
                              {t.type === 'Expense' ? '-' : '+'}{Math.abs(t.amount).toLocaleString('fr-FR')}€
                           </p>
                        </div>
@@ -628,13 +628,13 @@ const DocumentsView = ({ transactions }: { transactions: Transaction[] }) => {
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-fade-in h-screen flex flex-col pb-24">
       <div>
-        <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Assistant Financier Chat (IA)</h2>
+        <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">Assistant Financier Chat (IA)</h2>
         <p className="text-slate-500 font-medium">Un chat local connecté à vos vraies données.</p>
       </div>
 
       <div className="flex-1 bg-white border border-slate-200 rounded-[2.5rem] p-8 flex flex-col shadow-2xl overflow-hidden relative">
          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-            <i data-lucide="bot" className="w-64 h-64 text-[#0AB4D8]"></i>
+            <i data-lucide="bot" className="w-64 h-64 text-sky-600"></i>
          </div>
 
          <div 
@@ -643,17 +643,17 @@ const DocumentsView = ({ transactions }: { transactions: Transaction[] }) => {
          >
             {messages.length === 0 ? (
                <div className="h-full flex flex-col items-center justify-center text-center opacity-50">
-                  <div className="w-20 h-20 bg-[#E8F4FD] rounded-3xl flex items-center justify-center mb-6">
-                     <i data-lucide="sparkles" className="w-10 h-10 text-[#0AB4D8]"></i>
+                  <div className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center mb-6">
+                     <i data-lucide="sparkles" className="w-10 h-10 text-sky-600"></i>
                   </div>
-                  <h3 className="font-black text-xl italic uppercase tracking-widest text-[#1a4a6d]">Demandez à votre IA</h3>
+                  <h3 className="font-black text-xl italic uppercase tracking-widest text-slate-700">Demandez à votre IA</h3>
                   <p className="text-slate-400 text-sm mt-3">Ex: "Combien j'ai dépensé en loyer ?" ou "Est-ce que je peux m'offrir une Tesla ?"</p>
                </div>
             ) : (
                messages.map((m, i) => (
                   <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                     <div className={`max-w-[80%] p-6 rounded-3xl ${m.role === 'user' ? 'bg-[#0AB4D8] text-white rounded-tr-sm' : 'bg-[#E8F4FD] border border-slate-200 text-[#0A2540] rounded-tl-sm shadow-inner'}`}>
-                        {m.role === 'ai' && <i data-lucide="bot" className="w-4 h-4 text-[#0AB4D8] mb-3 block"></i>}
+                     <div className={`max-w-[80%] p-6 rounded-3xl ${m.role === 'user' ? 'bg-sky-500 text-white rounded-tr-sm' : 'bg-slate-100 border border-slate-200 text-slate-900 rounded-tl-sm shadow-inner'}`}>
+                        {m.role === 'ai' && <i data-lucide="bot" className="w-4 h-4 text-sky-600 mb-3 block"></i>}
                         <p className="font-bold leading-relaxed">{m.content}</p>
                      </div>
                   </div>
@@ -661,10 +661,10 @@ const DocumentsView = ({ transactions }: { transactions: Transaction[] }) => {
             )}
             {loading && (
                <div className="flex justify-start">
-                  <div className="bg-[#E8F4FD] border border-slate-200 p-6 rounded-3xl rounded-tl-sm flex items-center gap-3">
-                     <span className="w-2 h-2 bg-[#0AB4D8] rounded-full animate-bounce"></span>
-                     <span className="w-2 h-2 bg-[#0AB4D8] rounded-full animate-bounce delay-75"></span>
-                     <span className="w-2 h-2 bg-[#0AB4D8] rounded-full animate-bounce delay-150"></span>
+                  <div className="bg-slate-100 border border-slate-200 p-6 rounded-3xl rounded-tl-sm flex items-center gap-3">
+                     <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce"></span>
+                     <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-75"></span>
+                     <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-150"></span>
                   </div>
                </div>
             )}
@@ -676,12 +676,12 @@ const DocumentsView = ({ transactions }: { transactions: Transaction[] }) => {
                value={input}
                onChange={e => setInput(e.target.value)}
                placeholder="Posez votre question financière..."
-               className="flex-1 bg-[#E8F4FD] border border-slate-200 rounded-2xl px-8 py-5 text-[#0A2540] font-bold outline-none focus:border-emerald-500/50 transition-all"
+               className="flex-1 bg-slate-100 border border-slate-200 rounded-2xl px-8 py-5 text-slate-900 font-bold outline-none focus:border-sky-400 transition-all"
             />
             <button 
                type="submit" 
                disabled={!input.trim() || loading}
-               className="bg-[#0AB4D8] hover:bg-[#0AB4D8] disabled:opacity-50 text-[#050505] w-16 rounded-2xl flex items-center justify-center transition-all shadow-xl shadow-[#0AB4D8]/10"
+               className="bg-sky-500 hover:bg-sky-500 disabled:opacity-50 text-slate-900 w-16 rounded-2xl flex items-center justify-center transition-all shadow-xl shadow-sky-200"
             >
                <i data-lucide="send" className="w-6 h-6"></i>
             </button>
@@ -742,11 +742,11 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
         <div className="space-y-4">
            <div className="flex items-center gap-3">
-             <span className="px-3 py-1 bg-[#0AB4D8]/10 border border-[#0AB4D8]/30 rounded-full text-[8px] font-black text-[#0AB4D8] uppercase tracking-[0.2em]">v4.2.0 Stable</span>
-             <span className="px-3 py-1 bg-[#DCF0FA] border border-slate-200 rounded-full text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Neural Engine Active</span>
+             <span className="px-3 py-1 bg-sky-100 border border-sky-400 rounded-full text-[8px] font-black text-sky-600 uppercase tracking-[0.2em]">v4.2.0 Stable</span>
+             <span className="px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Neural Engine Active</span>
            </div>
-           <h2 className="text-6xl font-black text-white tracking-tighter uppercase italic leading-none">
-             Trading <span className="text-[#0AB4D8]">Terminal</span>
+           <h2 className="text-6xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+             Trading <span className="text-sky-600">Terminal</span>
            </h2>
            <p className="text-slate-500 font-bold uppercase tracking-[0.4em] text-[10px]">Quantum Alpha intelligence System</p>
         </div>
@@ -756,7 +756,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
              <button 
                key={t}
                onClick={() => setGap(t)}
-               className={`px-8 py-4 rounded-2xl text-[10px] font-black tracking-widest transition-all duration-500 ${gap === t ? 'bg-[#0AB4D8] text-white shadow-[0_0_20px_rgba(10,180,216,0.4)] scale-105' : 'text-slate-400 hover:text-[#0A2540] hover:bg-white/5'}`}
+               className={`px-8 py-4 rounded-2xl text-[10px] font-black tracking-widest transition-all duration-500 ${gap === t ? 'bg-sky-500 text-white shadow-[0_0_15px_rgba(14,165,233,0.3)] scale-105' : 'text-slate-400 hover:text-slate-900 hover:bg-sky-50'}`}
              >
                {t}
              </button>
@@ -768,7 +768,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
         {/* --- Main Chart Column --- */}
         <div className="lg:col-span-8 space-y-12">
           <div className="bg-white border border-slate-200 rounded-[4rem] p-12 space-y-12 shadow-3xl relative overflow-hidden group/main">
-             <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#0AB4D8]/5 blur-[120px] rounded-full group-hover/main:bg-[#0AB4D8]/10 transition-colors duration-1000"></div>
+             <div className="absolute -top-24 -right-24 w-96 h-96 bg-sky-50 blur-[120px] rounded-full group-hover/main:bg-sky-100 transition-colors duration-1000"></div>
              
              <div className="flex justify-between items-center relative z-10">
                 <div className="flex items-center gap-6">
@@ -776,24 +776,24 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                       <i data-lucide="landmark" className="w-9 h-9 text-amber-600"></i>
                    </div>
                    <div>
-                      <h3 className="font-black text-4xl text-[#0A2540] italic tracking-tighter">XAU/USD <span className="text-slate-300 not-italic ml-2 font-medium">Gold Spot</span></h3>
+                      <h3 className="font-black text-4xl text-slate-900 italic tracking-tighter">XAU/USD <span className="text-slate-500 not-italic ml-2 font-medium">Gold Spot</span></h3>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-2 flex items-center gap-3">
-                        <span className="w-2 h-2 bg-[#0AB4D8] rounded-full animate-pulse"></span>
+                        <span className="w-2 h-2 bg-sky-500 rounded-full animate-pulse"></span>
                         OANDA EXECUTION NODE • LEVERAGE 1:100
                       </p>
                    </div>
                 </div>
                 <div className="hidden md:block text-right">
-                   <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1 italic">Real-time Feed</p>
-                   <p className="text-3xl font-black text-[#0AB4D8] tracking-tighter drop-shadow-[0_0_10px_rgba(10,180,216,0.3)]">2,738.50 <span className="text-xs font-bold opacity-40 ml-1">USD</span></p>
+                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 italic">Real-time Feed</p>
+                   <p className="text-3xl font-black text-sky-600 tracking-tighter drop-shadow-[0_0_10px_rgba(10,180,216,0.3)]">2,738.50 <span className="text-xs font-bold opacity-40 ml-1">USD</span></p>
                 </div>
              </div>
 
-             <div className="relative rounded-[2.5rem] overflow-hidden border border-slate-200 bg-white/60 group/chart shadow-inner">
+             <div className="relative rounded-[2.5rem] overflow-hidden border border-slate-200 bg-white group/chart shadow-inner">
                 <MarketChart symbol="OANDA:XAUUSD" interval={gap} />
-                 <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200">
-                    <i data-lucide="shield-check" className="w-3 h-3 text-[#0AB4D8]"></i>
-                    <span className="text-[8px] font-black text-[#0A2540] uppercase tracking-widest">Secure Link Established</span>
+                 <div className="absolute top-6 right-6 flex items-center gap-3 bg-white backdrop-blur-md px-4 py-2 rounded-full border border-slate-200">
+                    <i data-lucide="shield-check" className="w-3 h-3 text-sky-600"></i>
+                    <span className="text-[8px] font-black text-slate-900 uppercase tracking-widest">Secure Link Established</span>
                  </div>
               </div>
 
@@ -802,12 +802,12 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                   key="neural-scan-btn"
                   onClick={handleGoldAnalysis}
                   disabled={isAnalyzingGold}
-                  className="group/btn relative py-8 bg-[#DCF0FA] overflow-hidden font-black rounded-[2.5rem] transition-all duration-500 shadow-2xl hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+                  className="group/btn relative py-8 bg-slate-100 overflow-hidden font-black rounded-[2.5rem] transition-all duration-500 shadow-2xl hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                 >
-                   <div className="absolute inset-0 bg-gradient-to-r from-[#0AB4D8] to-[#0D8AB0] opacity-90 group-hover/btn:opacity-100 transition-opacity"></div>
+                   <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-sky-600 opacity-90 group-hover/btn:opacity-100 transition-opacity"></div>
                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
                    
-                   <div key={isAnalyzingGold ? 'scanning' : 'ready'} className="relative flex items-center justify-center gap-5 text-white uppercase tracking-[0.3em] text-xs">
+                   <div key={isAnalyzingGold ? 'scanning' : 'ready'} className="relative flex items-center justify-center gap-5 text-slate-900 uppercase tracking-[0.3em] text-xs">
                       {isAnalyzingGold ? (
                         <>
                           <div className="w-5 h-5 border-2 border-slate-300 border-t-white rounded-full animate-spin"></div>
@@ -823,13 +823,13 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                 </button>
                 
                 <div className="grid grid-cols-2 gap-4">
-                   <div className="bg-[#EBF5FB] border border-slate-200 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-[#DCF0FA] transition-colors">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-[#0AB4D8] transition-colors">Network Gap</p>
-                      <p className="text-[#0A2540] font-black text-3xl italic tracking-tighter">{gap}</p>
+                   <div className="bg-slate-50 border border-slate-200 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-slate-100 transition-colors">
+                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-sky-600 transition-colors">Network Gap</p>
+                      <p className="text-slate-900 font-black text-3xl italic tracking-tighter">{gap}</p>
                    </div>
-                   <div className="bg-[#EBF5FB] border border-slate-200 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-[#DCF0FA] transition-colors">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-[#0AB4D8] transition-colors">Confidence</p>
-                      <p className="text-[#0AB4D8] font-black text-3xl tracking-tighter">94.2%</p>
+                   <div className="bg-slate-50 border border-slate-200 rounded-[2rem] p-6 flex flex-col justify-center text-center group/stat hover:bg-slate-100 transition-colors">
+                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 group-hover/stat:text-sky-600 transition-colors">Confidence</p>
+                      <p className="text-sky-600 font-black text-3xl tracking-tighter">94.2%</p>
                    </div>
                 </div>
              </div>
@@ -839,7 +839,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
         {/* --- Side Analysis Column --- */}
         <div className="lg:col-span-4 h-full">
           {goldAnalysis ? (
-            <div key="analysis-results" className={`bg-white border-[3px] rounded-[4rem] p-12 h-full flex flex-col relative overflow-hidden shadow-3xl transition-all duration-700 ${goldAnalysis.signal === 'BUY' ? 'border-[#0AB4D8]/30 shadow-[#0AB4D8]/10' : goldAnalysis.signal === 'SELL' ? 'border-red-200 shadow-red-500/10' : 'border-zinc-500/20 shadow-zinc-500/10'}`}>
+            <div key="analysis-results" className={`bg-white border-[3px] rounded-[4rem] p-12 h-full flex flex-col relative overflow-hidden shadow-3xl transition-all duration-700 ${goldAnalysis.signal === 'BUY' ? 'border-sky-400 shadow-sky-200' : goldAnalysis.signal === 'SELL' ? 'border-red-300 shadow-red-100' : 'border-zinc-500/20 shadow-slate-200'}`}>
                
                <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
                   <i data-lucide={goldAnalysis.signal === 'BUY' ? 'trending-up' : goldAnalysis.signal === 'SELL' ? 'trending-down' : 'activity'} className="w-64 h-64"></i>
@@ -849,11 +849,11 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                   <div className="space-y-6">
                      <p className="text-slate-400 font-black text-[10px] uppercase tracking-[0.4em]">Signal Vector</p>
                      <div className="flex items-center gap-6">
-                        <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-2xl shrink-0 ${goldAnalysis.signal === 'BUY' ? 'bg-[#0AB4D8]/10 text-[#0AB4D8] shadow-[#0AB4D8]/20' : goldAnalysis.signal === 'SELL' ? 'bg-red-50 text-red-500 shadow-red-500/20' : 'bg-zinc-500/10 text-slate-500 shadow-zinc-500/20'}`}>
+                        <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-2xl shrink-0 ${goldAnalysis.signal === 'BUY' ? 'bg-sky-100 text-sky-600 shadow-sky-200' : goldAnalysis.signal === 'SELL' ? 'bg-red-50 text-red-500 shadow-red-500/20' : 'bg-zinc-500/10 text-slate-500 shadow-zinc-500/20'}`}>
                            <i data-lucide={goldAnalysis.signal === 'BUY' ? 'arrow-up-right' : goldAnalysis.signal === 'SELL' ? 'arrow-down-left' : 'pause'} className="w-10 h-10"></i>
                         </div>
                         <div>
-                           <p className={`text-4xl font-black italic uppercase tracking-tighter leading-none ${goldAnalysis.signal === 'BUY' ? 'text-[#0AB4D8]' : goldAnalysis.signal === 'SELL' ? 'text-red-500' : 'text-slate-500'}`}>{goldAnalysis.signal}</p>
+                           <p className={`text-4xl font-black italic uppercase tracking-tighter leading-none ${goldAnalysis.signal === 'BUY' ? 'text-sky-600' : goldAnalysis.signal === 'SELL' ? 'text-red-500' : 'text-slate-600'}`}>{goldAnalysis.signal}</p>
                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-2">Quantitative Decision</p>
                         </div>
                      </div>
@@ -862,58 +862,58 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                   <div className="space-y-6">
                      <div className="flex justify-between items-end">
                         <p className="text-slate-400 font-black text-[10px] uppercase tracking-[0.4em]">Order Matrix</p>
-                        <span className="text-[9px] font-bold text-[#0AB4D8]/60 uppercase">Optimal Entry</span>
+                        <span className="text-[9px] font-bold text-sky-600/60 uppercase">Optimal Entry</span>
                      </div>
                      <div className="grid grid-cols-1 gap-4">
-                        <div className="bg-[#EBF5FB] p-8 rounded-[2.5rem] border border-slate-200 flex justify-between items-center group/readout hover:bg-[#DCF0FA] transition-colors">
+                        <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 flex justify-between items-center group/readout hover:bg-slate-100 transition-colors">
                            <div>
                               <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1 group-hover/readout:text-red-500 transition-colors">Stop Loss</p>
                               <p className="text-red-400 font-black text-2xl italic tracking-tighter">{goldAnalysis.sl}</p>
                            </div>
-                           <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center border border-red-200">
+                           <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center border border-red-300">
                               <i data-lucide="shield-alert" className="w-4 h-4 text-red-500"></i>
                            </div>
                         </div>
-                        <div className="bg-[#EBF5FB] p-8 rounded-[2.5rem] border border-slate-200 flex justify-between items-center group/readout hover:bg-[#DCF0FA] transition-colors">
+                        <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 flex justify-between items-center group/readout hover:bg-slate-100 transition-colors">
                            <div>
-                              <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1 group-hover/readout:text-[#0AB4D8] transition-colors">Take Profit</p>
-                              <p className="text-[#0AB4D8] font-black text-2xl italic tracking-tighter">{goldAnalysis.tp}</p>
+                              <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1 group-hover/readout:text-sky-600 transition-colors">Take Profit</p>
+                              <p className="text-sky-600 font-black text-2xl italic tracking-tighter">{goldAnalysis.tp}</p>
                            </div>
-                           <div className="w-10 h-10 rounded-xl bg-[#0AB4D8]/10 flex items-center justify-center border border-[#0AB4D8]/30">
-                              <i data-lucide="target" className="w-5 h-5 text-[#0AB4D8]"></i>
+                           <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center border border-sky-400">
+                              <i data-lucide="target" className="w-5 h-5 text-sky-600"></i>
                            </div>
                         </div>
                      </div>
                   </div>
 
-                  <div className="flex-1 p-8 bg-[#EBF5FB] rounded-[2.5rem] border border-slate-200 flex flex-col justify-center relative group/reason">
-                     <div className="absolute top-4 right-6 text-slate-200 group-hover/reason:text-[#0AB4D8]/20 transition-colors">
+                  <div className="flex-1 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-200 flex flex-col justify-center relative group/reason">
+                     <div className="absolute top-4 right-6 text-slate-400 group-hover/reason:text-sky-600/20 transition-colors">
                         <i data-lucide="quote" className="w-10 h-10"></i>
                      </div>
-                     <p className="text-[#1a4a6d] text-sm leading-relaxed font-bold italic relative z-10">"{goldAnalysis.reason}"</p>
+                     <p className="text-slate-700 text-sm leading-relaxed font-bold italic relative z-10">"{goldAnalysis.reason}"</p>
                   </div>
 
-                  <button className="group/exec w-full py-8 bg-white text-black font-black rounded-[2.5rem] transition-all duration-500 uppercase tracking-[0.4em] text-[10px] hover:bg-[#0AB4D8] hover:text-white hover:scale-[1.05] active:scale-95 shadow-2xl shadow-white/5">
+                  <button className="group/exec w-full py-8 bg-white text-slate-900 font-black rounded-[2.5rem] transition-all duration-500 uppercase tracking-[0.4em] text-[10px] hover:bg-sky-500 hover:text-white hover:scale-[1.05] active:scale-95 shadow-2xl shadow-slate-200">
                     Execute Terminal Order
                   </button>
                </div>
             </div>
           ) : (
-            <div key="analysis-standby" className="bg-white border border-dashed border-slate-200 rounded-[4rem] p-16 h-full flex flex-col items-center justify-center text-center space-y-10 group hover:border-[#0AB4D8]/40 transition-all duration-1000">
+            <div key="analysis-standby" className="bg-white border border-dashed border-slate-200 rounded-[4rem] p-16 h-full flex flex-col items-center justify-center text-center space-y-10 group hover:border-sky-400 transition-all duration-1000">
                <div className="relative">
-                  <div className="absolute inset-0 bg-[#0AB4D8]/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
-                  <div className="relative w-32 h-32 bg-[#E8F4FD] rounded-[3rem] flex items-center justify-center text-slate-200 shadow-2xl border border-slate-200 group-hover:scale-110 group-hover:text-[#0AB4D8] transition-all duration-700">
+                  <div className="absolute inset-0 bg-sky-100 blur-3xl rounded-full scale-150 animate-pulse"></div>
+                  <div className="relative w-32 h-32 bg-slate-100 rounded-[3rem] flex items-center justify-center text-slate-400 shadow-2xl border border-slate-200 group-hover:scale-110 group-hover:text-sky-600 transition-all duration-700">
                     <i data-lucide="cpu" className="w-16 h-16 animate-pulse"></i>
                   </div>
                </div>
                <div className="space-y-6">
-                 <h4 className="text-[#0A2540] font-black text-3xl uppercase italic tracking-tighter">Neural Engine <span className="text-[#0AB4D8]">Standby</span></h4>
+                 <h4 className="text-slate-900 font-black text-3xl uppercase italic tracking-tighter">Neural Engine <span className="text-sky-600">Standby</span></h4>
                  <p className="text-slate-500 text-sm max-w-[240px] leading-relaxed font-medium mx-auto">Prêt pour la séquence d'analyse. Sélectionnez une unité de temps et synchronisez le moteur pour générer un vecteur de trading optimal.</p>
                </div>
                <div className="flex gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#CCE6F4] rounded-full animate-bounce"></div>
-                  <div className="w-1.5 h-1.5 bg-[#CCE6F4] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-1.5 h-1.5 bg-[#CCE6F4] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-1.5 h-1.5 bg-sky-100 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-sky-100 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-1.5 h-1.5 bg-sky-100 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                </div>
             </div>
           )}
@@ -986,39 +986,39 @@ const App = () => {
   }
 
   return (
-    <div className="flex h-screen bg-[#F0F8FF] text-[#0A2540] overflow-hidden font-inter selection:bg-[#0AB4D8]/30 selection:text-emerald-300">
+    <div className="flex h-screen bg-sky-50 text-slate-900 overflow-hidden font-inter selection:bg-sky-500/30 selection:text-sky-400">
       <Sidebar activeView={view} setView={setView} />
       
       <main className="flex-1 overflow-hidden flex flex-col relative">
-        <header className="h-24 border-b border-slate-200 flex items-center justify-between px-12 bg-[#F0F8FF]/95 backdrop-blur-md z-40 shrink-0">
+        <header className="h-24 border-b border-slate-200 flex items-center justify-between px-12 bg-white/95 backdrop-blur-md z-40 shrink-0">
           <div className="flex items-center gap-5">
-            <div className="w-12 h-12 bg-[#E0F4FB] rounded-2xl border border-slate-200 flex items-center justify-center shadow-inner">
-               <i data-lucide="user-round" className="w-5 h-5 text-slate-500"></i>
+            <div className="w-12 h-12 bg-slate-100 rounded-2xl border border-slate-200 flex items-center justify-center shadow-inner">
+               <i data-lucide="user-round" className="w-5 h-5 text-slate-600"></i>
             </div>
             <div>
               <p className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] mb-0.5">Session Active</p>
-              <span className="text-sm font-black text-[#0A2540] italic">{currentUser.name}</span>
+              <span className="text-sm font-black text-slate-900 italic">{currentUser.name}</span>
             </div>
           </div>
           <div className="flex items-center gap-10">
              <div className="flex items-center gap-8 border-x border-slate-200 px-10">
                 <div className="text-center">
-                   <p className="text-[10px] font-black text-slate-300 uppercase mb-0.5 tracking-widest">Latency</p>
-                   <p className="text-xs font-black text-[#0AB4D8]">22ms</p>
+                   <p className="text-[10px] font-black text-slate-500 uppercase mb-0.5 tracking-widest">Latency</p>
+                   <p className="text-xs font-black text-sky-600">22ms</p>
                 </div>
                 <div className="text-center">
-                   <p className="text-[10px] font-black text-slate-300 uppercase mb-0.5 tracking-widest">Node</p>
-                   <p className="text-xs font-black text-white">Paris-01</p>
+                   <p className="text-[10px] font-black text-slate-500 uppercase mb-0.5 tracking-widest">Node</p>
+                   <p className="text-xs font-black text-slate-900">Paris-01</p>
                 </div>
              </div>
              <div className="text-right">
                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status AI</p>
-               <p className="text-[10px] font-black text-[#0AB4D8] flex items-center gap-2 justify-end">
-                 <span className="w-1.5 h-1.5 bg-[#0AB4D8] rounded-full animate-pulse shadow-[0_0_8px_rgba(10,180,216,0.8)]"></span>
+               <p className="text-[10px] font-black text-sky-600 flex items-center gap-2 justify-end">
+                 <span className="w-1.5 h-1.5 bg-sky-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(14,165,233,0.5)]"></span>
                  SYNCED
                </p>
              </div>
-             <button onClick={handleLogout} className="p-3 bg-[#E0F4FB] border border-slate-200 rounded-xl text-slate-400 hover:text-red-400 hover:border-red-200 transition-all" title="Déconnexion">
+             <button onClick={handleLogout} className="p-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-400 hover:text-red-400 hover:border-red-300 transition-all" title="Déconnexion">
                <i data-lucide="log-out" className="w-4 h-4"></i>
              </button>
           </div>
@@ -1027,7 +1027,7 @@ const App = () => {
         <div className="flex-1 overflow-y-auto bg-transparent relative z-10 custom-scroll">
           {loading && (
             <div className="flex items-center justify-center py-32">
-              <div className="w-12 h-12 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-sky-200 border-t-sky-500 rounded-full animate-spin"></div>
             </div>
           )}
           {!loading && view === 'dashboard' && <DashboardView transactions={transactions} addTransaction={addTransaction} />}
@@ -1037,7 +1037,7 @@ const App = () => {
           {!loading && view === 'investments' && <InvestmentsView onSimulate={addSimulation} />}
         </div>
 
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#0AB4D8]/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-50 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
       </main>
     </div>

@@ -13,8 +13,8 @@ type Transaction = {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#0c0c0c] border border-white/10 rounded-2xl p-4 shadow-2xl">
-        <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-2">{label}</p>
+      <div className="bg-white border border-white/10 rounded-2xl p-4 shadow-2xl">
+        <p className="text-slate-600 text-xs font-bold uppercase tracking-widest mb-2">{label}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} className="font-black text-sm" style={{ color: p.color }}>{p.name}: {p.value.toLocaleString('fr-FR')}€</p>
         ))}
@@ -105,8 +105,8 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
     return (
        <div className="p-8 max-w-7xl mx-auto flex items-center justify-center min-h-[60vh]">
           <div className="text-center space-y-6">
-             <div className="w-16 h-16 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin mx-auto"></div>
-             <p className="text-emerald-500 font-black tracking-[0.2em] uppercase text-xs animate-pulse">AI Engines Computing...</p>
+             <div className="w-16 h-16 border-4 border-sky-500/10 border-t-emerald-500 rounded-full animate-spin mx-auto"></div>
+             <p className="text-sky-600 font-black tracking-[0.2em] uppercase text-xs animate-pulse">AI Engines Computing...</p>
           </div>
        </div>
     );
@@ -116,8 +116,8 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
     <div className="p-8 max-w-7xl mx-auto space-y-10 animate-fade-in relative">
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">AI Analytics Engine</h2>
-          <p className="text-zinc-500 font-medium">Modèles prédictifs et Machine Learning sur vos données financieres.</p>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">AI Analytics Engine</h2>
+          <p className="text-slate-500 font-medium">Modèles prédictifs et Machine Learning sur vos données financieres.</p>
         </div>
         <button 
           onClick={async () => {
@@ -126,7 +126,7 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                 window.location.reload();
              }
           }}
-          className="flex items-center gap-2 px-6 py-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all"
+          className="flex items-center gap-2 px-6 py-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all"
         >
            <i data-lucide="trash-2" className="w-4 h-4"></i> Supprimer l'Historique
         </button>
@@ -134,14 +134,14 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
 
       {/* Score de Santé Financière */}
       {health && (
-      <div className="bg-gradient-to-br from-[#0c0c0c] to-[#111] border border-white/5 rounded-[2.5rem] p-10 shadow-2xl">
+      <div className="bg-gradient-to-br from-[#0c0c0c] to-[#111] border border-slate-200 rounded-[2.5rem] p-10 shadow-2xl">
          <div className="flex flex-col lg:flex-row gap-10 items-center">
             {/* Left: Info & Improvements */}
             <div className="flex-1 space-y-6">
                <div>
-                  <p className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Intelligence Artificielle</p>
-                  <h3 className="font-black text-3xl text-white italic">Score de Santé<br/>Financière</h3>
-                  <p className="text-zinc-500 text-sm mt-2">Évalué en temps réel par notre moteur XGBoost local.</p>
+                  <p className="text-sky-600 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Intelligence Artificielle</p>
+                  <h3 className="font-black text-3xl text-slate-900 italic">Score de Santé<br/>Financière</h3>
+                  <p className="text-slate-500 text-sm mt-2">Évalué en temps réel par notre moteur XGBoost local.</p>
                </div>
                <div className="grid grid-cols-1 gap-3">
                   {health.improvements?.map((imp: string, i: number) => (
@@ -179,10 +179,10 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
 
                   {/* Inner content */}
                   <div className="text-center z-10">
-                     <span className="text-6xl font-black text-white tracking-tight">{health.score}</span>
+                     <span className="text-6xl font-black text-slate-900 tracking-tight">{health.score}</span>
                      <div className="flex items-center justify-center gap-2 mt-1">
                         <span className={`text-xs font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full ${
-                           health.score > 70 ? 'text-emerald-400 bg-emerald-500/10' :
+                           health.score > 70 ? 'text-sky-500 bg-sky-500/10' :
                            health.score > 40 ? 'text-amber-400 bg-amber-500/10' :
                            'text-red-400 bg-red-500/10'
                         }`}>Grade {health.grade}</span>
@@ -190,7 +190,7 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                   </div>
                </div>
                {/* Score bar label */}
-               <div className="flex justify-between w-56 text-[9px] font-black text-zinc-600 uppercase tracking-widest px-1">
+               <div className="flex justify-between w-56 text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">
                   <span>0 — Critique</span>
                   <span>100 — Excellent</span>
                </div>
@@ -198,13 +198,13 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
 
             {/* Right: Strengths */}
             <div className="flex-1 space-y-4">
-               <h4 className="text-[10px] font-black uppercase text-zinc-500 tracking-widest mb-4">Points Forts Détectés :</h4>
+               <h4 className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-4">Points Forts Détectés :</h4>
                {health.strengths?.map((str: string, i: number) => (
-                  <div key={i} className="flex items-center gap-4 bg-emerald-500/5 border border-emerald-500/10 p-5 rounded-2xl hover:border-emerald-500/30 transition-all">
-                     <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                        <i data-lucide="check-circle" className="w-4 h-4 text-emerald-500"></i>
+                  <div key={i} className="flex items-center gap-4 bg-sky-500/5 border border-sky-500/10 p-5 rounded-2xl hover:border-sky-500/30 transition-all">
+                     <div className="w-8 h-8 rounded-xl bg-sky-500/10 flex items-center justify-center shrink-0">
+                        <i data-lucide="check-circle" className="w-4 h-4 text-sky-600"></i>
                      </div>
-                     <span className="text-sm font-bold text-emerald-400">{str}</span>
+                     <span className="text-sm font-bold text-sky-500">{str}</span>
                   </div>
                ))}
             </div>
@@ -222,25 +222,25 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
             return (
                <div key={i}
                   onClick={() => setSelectedCategory(selectedCategory === b.category ? null : b.category)}
-                  className={`cursor-pointer bg-[#0c0c0c] border rounded-[2rem] p-6 shadow-xl relative overflow-hidden group transition-all ${
-                     selectedCategory === b.category ? 'border-emerald-500/60 shadow-emerald-500/10 shadow-xl' : 'border-white/5 hover:border-emerald-500/30'
+                  className={`cursor-pointer bg-white border rounded-[2rem] p-6 shadow-xl relative overflow-hidden group transition-all ${
+                     selectedCategory === b.category ? 'border-sky-500/60 shadow-emerald-500/10 shadow-xl' : 'border-slate-200 hover:border-sky-500/30'
                   }`}>
                   <div className="flex justify-between items-start mb-6">
                      <div>
-                        <p className="text-[10px] font-black uppercase text-zinc-500 tracking-widest">{b.category}</p>
-                        <p className="text-xl font-black text-white mt-1">{b.suggested_budget.toLocaleString('fr-FR')}€</p>
+                        <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest">{b.category}</p>
+                        <p className="text-xl font-black text-slate-900 mt-1">{b.suggested_budget.toLocaleString('fr-FR')}€</p>
                      </div>
                      <span className={`text-[8px] font-bold px-2 py-1 rounded-full ${
-                        selectedCategory === b.category ? 'bg-emerald-500 text-white' : 'bg-emerald-500/10 text-emerald-500'
+                        selectedCategory === b.category ? 'bg-sky-500 text-slate-900' : 'bg-sky-500/10 text-sky-600'
                      }`}>{selectedCategory === b.category ? 'ACTIF ▼' : b.reason}</span>
                   </div>
                   <div className="space-y-2">
                      <div className="flex justify-between text-[10px] font-bold">
-                        <span className={isOver ? 'text-red-400' : 'text-zinc-400'}>{current.toLocaleString('fr-FR')}€ dépensés</span>
-                        <span className="text-zinc-600">{Math.round(progress)}%</span>
+                        <span className={isOver ? 'text-red-400' : 'text-slate-600'}>{current.toLocaleString('fr-FR')}€ dépensés</span>
+                        <span className="text-slate-500">{Math.round(progress)}%</span>
                      </div>
                      <div className="w-full h-1.5 bg-[#1a1a1a] rounded-full overflow-hidden">
-                        <div className={`h-full rounded-full transition-all duration-1000 ${isOver ? 'bg-red-500' : 'bg-emerald-500'}`} style={{ width: `${progress}%` }}></div>
+                        <div className={`h-full rounded-full transition-all duration-1000 ${isOver ? 'bg-red-500' : 'bg-sky-500'}`} style={{ width: `${progress}%` }}></div>
                      </div>
                   </div>
                </div>
@@ -254,35 +254,35 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
         const catTransactions = transactions.filter(t => t.type === 'Expense' && t.category === selectedCategory);
         const catTotal = catTransactions.reduce((acc, t) => acc + Math.abs(t.amount), 0);
         return (
-          <div className="bg-[#0c0c0c] border border-emerald-500/20 rounded-[2.5rem] p-8 shadow-2xl">
+          <div className="bg-white border border-sky-500/20 rounded-[2.5rem] p-8 shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <p className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Filtrage Catégorie</p>
-                <h3 className="font-black text-2xl text-white italic">Dépenses — {selectedCategory}</h3>
+                <p className="text-sky-600 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Filtrage Catégorie</p>
+                <h3 className="font-black text-2xl text-slate-900 italic">Dépenses — {selectedCategory}</h3>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Total</p>
-                  <p className="text-2xl font-black text-white">{catTotal.toLocaleString('fr-FR')}€</p>
+                  <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total</p>
+                  <p className="text-2xl font-black text-slate-900">{catTotal.toLocaleString('fr-FR')}€</p>
                 </div>
                 <button onClick={() => setSelectedCategory(null)} className="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-all">
-                  <i data-lucide="x" className="w-4 h-4 text-zinc-400"></i>
+                  <i data-lucide="x" className="w-4 h-4 text-slate-600"></i>
                 </button>
               </div>
             </div>
             {catTransactions.length === 0 ? (
-              <p className="text-center text-zinc-600 py-8 font-black uppercase text-xs tracking-widest">Aucune dépense trouvée dans cette catégorie</p>
+              <p className="text-center text-slate-500 py-8 font-black uppercase text-xs tracking-widest">Aucune dépense trouvée dans cette catégorie</p>
             ) : (
               <div className="space-y-3">
                 {catTransactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((t, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 bg-[#121212] rounded-2xl border border-white/5 hover:border-white/10 transition-all">
+                  <div key={i} className="flex items-center justify-between p-4 bg-[#121212] rounded-2xl border border-slate-200 hover:border-white/10 transition-all">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0">
                         <i data-lucide="credit-card" className="w-4 h-4 text-red-400"></i>
                       </div>
                       <div>
-                        <p className="font-bold text-white text-sm">{t.label}</p>
-                        <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-widest">{t.date}</p>
+                        <p className="font-bold text-slate-900 text-sm">{t.label}</p>
+                        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">{t.date}</p>
                       </div>
                     </div>
                     <p className="text-red-400 font-black text-lg">-{Math.abs(t.amount).toLocaleString('fr-FR')}€</p>
@@ -296,10 +296,10 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
 
       {/* Evolution du Solde */}
       {evolutionData && evolutionData.length > 0 && (
-      <div className="bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] p-10 shadow-2xl relative mb-6">
+      <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 shadow-2xl relative mb-6">
          <div className="flex justify-between items-center mb-8">
-            <h3 className="font-black text-2xl text-white italic">Évolution du Solde</h3>
-            <span className={`text-[10px] font-black tracking-widest px-3 py-1 rounded-full ${evolutionData[evolutionData.length - 1].balance >= (evolutionData[0]?.balance || 0) ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
+            <h3 className="font-black text-2xl text-slate-900 italic">Évolution du Solde</h3>
+            <span className={`text-[10px] font-black tracking-widest px-3 py-1 rounded-full ${evolutionData[evolutionData.length - 1].balance >= (evolutionData[0]?.balance || 0) ? 'bg-sky-500/10 text-sky-600' : 'bg-red-500/10 text-red-500'}`}>
                TREND: {evolutionData[evolutionData.length - 1].balance >= (evolutionData[0]?.balance || 0) ? 'UP' : 'DOWN'}
             </span>
          </div>
@@ -318,9 +318,9 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                 <RechartsTooltip content={({ active, payload, label }: any) => {
                   if (active && payload && payload.length) {
                     return (
-                      <div className="bg-[#121212] border border-white/5 p-4 rounded-xl shadow-xl">
-                        <p className="text-zinc-500 text-xs font-bold mb-1 tracking-widest uppercase">{label}</p>
-                        <p className="text-white font-black text-xl">{payload[0].value.toLocaleString('fr-FR')}€</p>
+                      <div className="bg-[#121212] border border-slate-200 p-4 rounded-xl shadow-xl">
+                        <p className="text-slate-500 text-xs font-bold mb-1 tracking-widest uppercase">{label}</p>
+                        <p className="text-slate-900 font-black text-xl">{payload[0].value.toLocaleString('fr-FR')}€</p>
                       </div>
                     );
                   }
@@ -334,15 +334,15 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
       )}
 
       {/* Détecteur d'Anomalies de Dépenses (Random Forest) */}
-      <div className="bg-[#0c0c0c] border border-red-500/10 rounded-[2.5rem] p-10 relative overflow-hidden">
+      <div className="bg-white border border-red-500/10 rounded-[2.5rem] p-10 relative overflow-hidden">
          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
             <i data-lucide="shield-alert" className="w-48 h-48 text-red-500"></i>
          </div>
-         <h3 className="font-black text-xl text-white italic mb-2 relative z-10 flex items-center gap-3">
+         <h3 className="font-black text-xl text-slate-900 italic mb-2 relative z-10 flex items-center gap-3">
             <i data-lucide="radar" className="w-5 h-5 text-red-500"></i> 
             Détecteur d'Anomalies (Random Forest)
          </h3>
-         <p className="text-zinc-500 text-sm mb-8 relative z-10">Analyse de vos habitudes de consommation et détection d'outliers géographiques, financiers ou séquentiels.</p>
+         <p className="text-slate-500 text-sm mb-8 relative z-10">Analyse de vos habitudes de consommation et détection d'outliers géographiques, financiers ou séquentiels.</p>
          
          <div className="space-y-4 relative z-10">
             {anomalies && anomalies.anomalies && anomalies.anomalies.length > 0 ? (
@@ -353,42 +353,42 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                            <i data-lucide="alert-triangle" className="w-5 h-5 text-red-500"></i>
                         </div>
                         <div>
-                           <p className="font-black text-white text-lg">{ano.reason}</p>
-                           <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Sévérité: <span className={ano.severity === 'high' ? 'text-red-500' : 'text-amber-500'}>{ano.severity}</span></p>
+                           <p className="font-black text-slate-900 text-lg">{ano.reason}</p>
+                           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Sévérité: <span className={ano.severity === 'high' ? 'text-red-500' : 'text-amber-500'}>{ano.severity}</span></p>
                         </div>
                      </div>
-                     <button className="px-6 py-3 bg-red-500/10 text-red-400 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                     <button className="px-6 py-3 bg-red-500/10 text-red-400 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-red-500 hover:text-slate-900 transition-all">
                         {ano.suggested_action}
                      </button>
                   </div>
                ))
             ) : (
-               <div className="py-10 text-center border-2 border-dashed border-white/5 rounded-2xl bg-[#080808]">
-                  <i data-lucide="shield-check" className="w-10 h-10 text-emerald-500 mx-auto mb-3"></i>
-                  <p className="text-emerald-500 font-black uppercase text-xs tracking-[0.2em]">Aucune anomalie détectée</p>
-                  <p className="text-zinc-600 text-[10px] mt-2">Votre comportement financier est cohérent avec vos patterns historiques.</p>
+               <div className="py-10 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-[#080808]">
+                  <i data-lucide="shield-check" className="w-10 h-10 text-sky-600 mx-auto mb-3"></i>
+                  <p className="text-sky-600 font-black uppercase text-xs tracking-[0.2em]">Aucune anomalie détectée</p>
+                  <p className="text-slate-500 text-[10px] mt-2">Votre comportement financier est cohérent avec vos patterns historiques.</p>
                </div>
             )}
          </div>
       </div>
 
       {/* Prévision de Flux de Trésorerie (AI Forecast) */}
-      <div className="bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] p-10 relative overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 relative overflow-hidden">
          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-            <i data-lucide="trending-up" className="w-48 h-48 text-emerald-500"></i>
+            <i data-lucide="trending-up" className="w-48 h-48 text-sky-600"></i>
          </div>
          <div className="flex items-center justify-between mb-8 relative z-10">
             <div>
-               <h3 className="font-black text-xl text-white italic flex items-center gap-3">
-                  <i data-lucide="sparkles" className="w-5 h-5 text-emerald-500"></i>
+               <h3 className="font-black text-xl text-slate-900 italic flex items-center gap-3">
+                  <i data-lucide="sparkles" className="w-5 h-5 text-sky-600"></i>
                   Prévision de Trésorerie (30j)
                </h3>
-               <p className="text-zinc-500 text-sm mt-1">Projection basée sur vos patterns historiques de revenus et dépenses.</p>
+               <p className="text-slate-500 text-sm mt-1">Projection basée sur vos patterns historiques de revenus et dépenses.</p>
             </div>
             {forecast && (
                <div className="text-right">
-                  <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">Tendance</p>
-                  <p className={`text-xl font-black italic ${forecast.trend === 'upward' ? 'text-emerald-500' : 'text-amber-500'}`}>
+                  <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Tendance</p>
+                  <p className={`text-xl font-black italic ${forecast.trend === 'upward' ? 'text-sky-600' : 'text-amber-500'}`}>
                      {forecast.trend === 'upward' ? 'POSITIVE' : 'DESCENDANTE'}
                   </p>
                </div>
@@ -411,9 +411,9 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                      <RechartsTooltip content={({ active, payload, label }: any) => {
                        if (active && payload && payload.length) {
                          return (
-                           <div className="bg-[#121212] border border-white/5 p-4 rounded-xl shadow-xl">
-                             <p className="text-zinc-500 text-[10px] font-black mb-1 uppercase">{label}</p>
-                             <p className="text-white font-black text-lg">Prévu: {payload[0].value.toLocaleString('fr-FR')}€</p>
+                           <div className="bg-[#121212] border border-slate-200 p-4 rounded-xl shadow-xl">
+                             <p className="text-slate-500 text-[10px] font-black mb-1 uppercase">{label}</p>
+                             <p className="text-slate-900 font-black text-lg">Prévu: {payload[0].value.toLocaleString('fr-FR')}€</p>
                            </div>
                          );
                        }
@@ -423,7 +423,7 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                   </AreaChart>
                </ResponsiveContainer>
             ) : (
-               <div className="h-full flex items-center justify-center border-2 border-dashed border-white/5 rounded-3xl opacity-30">
+               <div className="h-full flex items-center justify-center border-2 border-dashed border-slate-200 rounded-3xl opacity-30">
                   <p className="font-black uppercase text-xs tracking-widest">Données insuffisantes pour la prédiction</p>
                </div>
             )}
