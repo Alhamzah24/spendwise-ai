@@ -77,7 +77,10 @@ class handler(BaseHTTPRequestHandler):
             self._send_json(200, {"filename": filename, "transactions": transactions})
 
         except Exception as e:
-            self._send_json(500, {"message": str(e)})
+            import traceback
+            error_msg = f"Error in {filename}: {str(e)}\n{traceback.format_exc()}"
+            print(error_msg)
+            self._send_json(500, {"message": error_msg})
 
     def _send_json(self, status, data):
         self.send_response(status)
