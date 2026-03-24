@@ -119,6 +119,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.json({ anomalies });
   }
 
+  if (action === 'forecast') {
+    if (txs.length < 5) return res.json({ forecast: [], trend: 'stable', message: 'Pas assez de données.' });
+    
+    // Group by Date for net daily change
+    const dailyNet: Record<string, number> = {};
+    txs.forEach(t => {
+      const net = t.type === 'Income' ? Math.abs(t.amount) : -Math.abs(t.amount);
+      dailyNet[t.date] = (dailyNet[t.date] || 0) + net;
+    });
+
+    const sortedDates = Object.keys(dailyNet).sort();
+    const nets = sortedDates.map(d => dailyNet[d]);
+    const avgNet = nets.reduce((s, n) => s + n, 0) / nets.length;
+
+    // Project 30 days
+    const forecast = [];
+    let currentBalance = txs.reduce((s, t) => s + (t.type === 'Income' ? Math.abs(t.amount) : -Math.abs(t.amount)), 0);
+    const lastDate = new Date(sortedDates[sortedDates.length - 1]);
+
+    for (let i = 1; i <= 30; i++) {
+      currentBalance += avgNet;
+      const nextDate = new Date(lastDate);
+      nextDate.setDate(lastDate.getDate() + i);
+      forecast.push({ date: nextDate.toISOString().split('T')[0], balance: Math.round(currentBalance) });
+    }
+
+    return res.json({ 
+      forecast, 
+      trend: avgNet > 0 ? 'upward' : 'downward',
+      avg_daily_change: Math.round(avgNet * 100) / 100
+    });
+  }
+
   if (action === 'chat') {
     const msgRaw = (data.message || '').toLowerCase();
     const msg = msgRaw
@@ -130,12 +163,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const isIncome = ['combien', 'cb ', 'quel'].some(w => msg.includes(w)) &&
       ['gagne', 'revenu', 'recu', 'rentre'].some(w => msg.includes(w));
     const isSavings = ['cote', 'epargn', 'economi'].some(w => msg.includes(w));
+    const isBig = ['plus grosse', 'maximum', 'max', 'forte', 'eleve'].some(w => msg.includes(w));
 
     const categories = ['Trading', 'Immobilier', 'Alimentation', 'Transport', 'Abonnements', 'Business', 'Consommation', 'Santé', 'Achats'];
-    let reply = "Je suis SpendWise AI local. Essayez 'Combien j'ai dépensé en Alimentation ?' ou 'Tesla ?'";
+    let reply = "Je suis SpendWise AI. Posez-moi une question sur vos finances (ex: 'Plus grosse dépense ?' ou 'Tesla ?')";
 
-    if (isExpense) {
-      const foundCat = categories.find(c => msg.includes(c.toLowerCase().replace(/[éè]/g, 'e')));
+    if (isBig && isExpense) {
+      const expenses = txs.filter(t => t.type === 'Expense').sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
+      if (expenses.length > 0) {
+        reply = `Votre plus grosse dépense est "${expenses[0].label}" d'un montant de ${Math.abs(expenses[0].amount).toLocaleString('fr-FR')}€ (${expenses[0].category}).`;
+      } else reply = "Vous n'avez aucune dépense enregistrée.";
+    } else if (isExpense) {
+      const foundCat = categories.find(c => msg.includes(c.toLowerCase().replace(/[éèàê]/g, 'e')));
       if (foundCat) {
         const total = txs.filter(t => t.type === 'Expense' && t.category.toLowerCase() === foundCat.toLowerCase())
           .reduce((s, t) => s + Math.abs(t.amount), 0);
@@ -160,6 +199,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       reply = bal > 40000
         ? `Avec un solde de ${bal.toLocaleString('fr-FR')}€, vous pouvez vous offrir une Tesla Model 3 !`
         : `Votre solde de ${bal.toLocaleString('fr-FR')}€ est insuffisant pour un achat comptant. Pensez au leasing.`;
+    } else if (msg.includes('moyenne')) {
+      const months = new Set(txs.map(t => t.date.substring(0, 7))).size || 1;
+      reply = `Votre moyenne de dépenses mensuelles est de ${Math.round(expenses / months).toLocaleString('fr-FR')}€/mois.`;
     }
 
     return res.json({ reply });

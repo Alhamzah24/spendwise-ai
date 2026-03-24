@@ -3,7 +3,7 @@ import {
   AreaChart, Area, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, CartesianGrid,
   BarChart, Bar, Legend
 } from 'recharts';
-import { apiAnomalies, apiHealthScore, apiBudget, apiClearTransactions } from './api';
+import { apiAnomalies, apiHealthScore, apiBudget, apiClearTransactions, apiForecast } from './api';
 
 type Transaction = {
   id: string; type: 'Expense' | 'Income';
@@ -28,6 +28,7 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
   const [anomalies, setAnomalies] = useState<any>(null);
   const [health, setHealth] = useState<any>(null);
   const [budget, setBudget] = useState<any>(null);
+  const [forecast, setForecast] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -36,14 +37,16 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
       setLoading(true);
       try {
         const txPayload = { transactions };
-        const [aRes, hRes, bRes] = await Promise.all([
+        const [aRes, hRes, bRes, fRes] = await Promise.all([
           apiAnomalies(txPayload),
           apiHealthScore(txPayload),
-          apiBudget(txPayload)
+          apiBudget(txPayload),
+          apiForecast(txPayload)
         ]);
         setAnomalies(aRes);
         setHealth(hRes);
         setBudget(bRes);
+        setForecast(fRes);
       } catch (e) {
         console.error("Error fetching AI Analytics:", e);
       } finally {
@@ -364,6 +367,64 @@ const AnalyticsView = ({ transactions }: { transactions: Transaction[] }) => {
                   <i data-lucide="shield-check" className="w-10 h-10 text-emerald-500 mx-auto mb-3"></i>
                   <p className="text-emerald-500 font-black uppercase text-xs tracking-[0.2em]">Aucune anomalie détectée</p>
                   <p className="text-zinc-600 text-[10px] mt-2">Votre comportement financier est cohérent avec vos patterns historiques.</p>
+               </div>
+            )}
+         </div>
+      </div>
+
+      {/* Prévision de Flux de Trésorerie (AI Forecast) */}
+      <div className="bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] p-10 relative overflow-hidden">
+         <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+            <i data-lucide="trending-up" className="w-48 h-48 text-emerald-500"></i>
+         </div>
+         <div className="flex items-center justify-between mb-8 relative z-10">
+            <div>
+               <h3 className="font-black text-xl text-white italic flex items-center gap-3">
+                  <i data-lucide="sparkles" className="w-5 h-5 text-emerald-500"></i>
+                  Prévision de Trésorerie (30j)
+               </h3>
+               <p className="text-zinc-500 text-sm mt-1">Projection basée sur vos patterns historiques de revenus et dépenses.</p>
+            </div>
+            {forecast && (
+               <div className="text-right">
+                  <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">Tendance</p>
+                  <p className={`text-xl font-black italic ${forecast.trend === 'upward' ? 'text-emerald-500' : 'text-amber-500'}`}>
+                     {forecast.trend === 'upward' ? 'POSITIVE' : 'DESCENDANTE'}
+                  </p>
+               </div>
+            )}
+         </div>
+
+         <div className="h-[300px] w-full relative z-10">
+            {forecast && forecast.forecast && forecast.forecast.length > 0 ? (
+               <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={forecast.forecast}>
+                     <defs>
+                        <linearGradient id="colorForecast" x1="0" y1="0" x2="0" y2="1">
+                           <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
+                           <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        </linearGradient>
+                     </defs>
+                     <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" vertical={false} strokeOpacity={0.05} />
+                     <XAxis dataKey="date" hide />
+                     <YAxis hide domain={['dataMin - 1000', 'dataMax + 1000']} />
+                     <RechartsTooltip content={({ active, payload, label }: any) => {
+                       if (active && payload && payload.length) {
+                         return (
+                           <div className="bg-[#121212] border border-white/5 p-4 rounded-xl shadow-xl">
+                             <p className="text-zinc-500 text-[10px] font-black mb-1 uppercase">{label}</p>
+                             <p className="text-white font-black text-lg">Prévu: {payload[0].value.toLocaleString('fr-FR')}€</p>
+                           </div>
+                         );
+                       }
+                       return null;
+                     }} />
+                     <Area type="monotone" dataKey="balance" stroke="#10b981" strokeDasharray="5 5" fill="url(#colorForecast)" strokeWidth={3} />
+                  </AreaChart>
+               </ResponsiveContainer>
+            ) : (
+               <div className="h-full flex items-center justify-center border-2 border-dashed border-white/5 rounded-3xl opacity-30">
+                  <p className="font-black uppercase text-xs tracking-widest">Données insuffisantes pour la prédiction</p>
                </div>
             )}
          </div>
