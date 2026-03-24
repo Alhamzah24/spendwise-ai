@@ -69,23 +69,7 @@ class handler(BaseHTTPRequestHandler):
                             credit_col_index = (debit_pos + credit_pos) // 2
                             break
                             
-                    # Precise section extraction for French Bank Statements (LCL, etc.)
-                    is_detail_section = False
-                    
                     for line in text_lines:
-                        line_upper = line.upper()
-                        
-                        # Section Header Detection (LCL uses "DETAIL DE VOS OPERATIONS")
-                        if any(x in line_upper for x in ["DETAIL DE VOS OPERATIONS", "DETAIL DES OPERATIONS", "LISTE DES OPERATIONS"]):
-                            is_detail_section = True
-                            continue
-                        
-                        # Stop if we hit a footer or next section
-                        if any(x in line_upper for x in ["TOTAL DES MOUVEMENTS", "SOLDE CREDITEUR AU"]):
-                            # We don't stop immediately to catch the last line, but we could
-                            pass
-                        
-                        if not is_detail_section: continue
                         if len(line.strip()) < 10: continue
                         
                         date_match = re.search(r'(\d{2}[-/.]\d{2}(?:[-/.]\d{2,4})?)', line)
@@ -111,21 +95,17 @@ class handler(BaseHTTPRequestHandler):
                             if not label_raw: label_raw = "Transaction Inconnue"
                             
                             label_upper = label_raw.upper()
-                            # COMPREHENSIVE IGNORE LIST (Ignore headers, summaries, and account metadata)
-                            if any(x in label_upper for x in [
-                                "SOLDE", "VOTRE FAVEUR", "REPORT", "TOTAL DES", 
-                                "DATE DE VALEUR", "MONTANT EN EUR", "DETAIL DES OPERATIONS",
-                                "COMPTE DE DEPOT", "SYNTHESE", "MLE ", "IBAN"
-                            ]): continue
+                            # Ignore summary lines / sub-totals
+                            if any(x in label_upper for x in ["SOLDE", "VOTRE FAVEUR", "REPORT", "TOTAL DES"]): continue
                             
-                            # Polarity Detection
+                            # Polarity
                             if sign == '-': amt = -abs(amt)
                             elif sign == '+': amt = abs(amt)
                             else:
                                 if amt_pos < credit_col_index: amt = -abs(amt)
                                 else: amt = abs(amt)
                             
-                            # Format date to YYYY-MM-DD
+                            # Format date
                             parts = re.split(r'[-/.]', d_str)
                             year = parts[2] if len(parts) == 3 else "2026"
                             if len(year) == 2: year = "20" + year
