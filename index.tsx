@@ -179,7 +179,7 @@ const DashboardView = ({ transactions, addTransaction }: { transactions: Transac
 
     setIsAnalyzing(true);
     try {
-      const res = await apiUploadStatement(file);
+      const res = await apiUploadStatement(file) as any;
       if (res.transactions) {
         // It parsed the pdf/csv and got transactions! We could add them to the global state.
         setReportResult({ 

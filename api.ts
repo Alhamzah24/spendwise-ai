@@ -57,14 +57,24 @@ export const apiChat = (data: { message: string, transactions: object[] }) =>
 
 // PDF/CSV parsing → api/parse.py (Python)
 export const apiUploadStatement = async (file: File) => {
-  // Convert file to base64 for serverless-compatible upload
-  const arrayBuffer = await file.arrayBuffer();
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-  return fetch(`${API}/parse`, {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ filename: file.name, fileBase64: base64 })
-  }).then(r => r.json());
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = (reader.result as string).split(',')[1];
+      try {
+        const res = await fetch(`${API}/parse`, {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify({ filename: file.name, fileBase64: base64 })
+        });
+        resolve(await res.json());
+      } catch (e) {
+        reject(e);
+      }
+    };
+    reader.onerror = () => reject(new Error("Erreur de lecture du fichier local (I/O)."));
+    reader.readAsDataURL(file);
+  });
 };
 
 // Legacy — kept for compatibility
