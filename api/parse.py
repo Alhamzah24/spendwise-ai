@@ -73,17 +73,19 @@ class handler(BaseHTTPRequestHandler):
                         if len(line.strip()) < 10: continue
                         
                         date_match = re.search(r'(\d{2}[-/.]\d{2}(?:[-/.]\d{2,4})?)', line)
-                        amt_match = re.search(r'([-+]?(?:\d{1,3}(?:\s\d{3})*|\d+)[.,]\d{2})(?:\s*€)?\s*$', line)
+                        # Match amount with optional leading sign and optional whitespace
+                        amt_match = re.search(r'([-+]\s*)?((?:\d{1,3}(?:\s\d{3})*|\d+)[.,]\d{2})(?:\s*€)?\s*$', line)
                         
                         if date_match and amt_match:
                             d_str = date_match.group(1)
-                            a_str = amt_match.group(1).replace(' ', '').replace(',', '.')
+                            sign = amt_match.group(1).strip() if amt_match.group(1) else ""
+                            a_str = amt_match.group(2).replace(' ', '').replace(',', '.')
                             
                             try:
                                 amt = float(a_str)
                             except: continue
                                 
-                            amt_pos = line.rfind(amt_match.group(1))
+                            amt_pos = line.rfind(amt_match.group(0).strip())
                             start_idx = date_match.end()
                             label_raw = line[start_idx:amt_pos].strip()
                             
@@ -95,11 +97,17 @@ class handler(BaseHTTPRequestHandler):
                             label_upper = label_raw.upper()
                             if any(x in label_upper for x in ["SOLDE", "VOTRE FAVEUR"]): continue
                             
-                            # SPATIAL DETERMINATION OF DEBIT VS CREDIT
-                            if amt_pos < credit_col_index:
-                                amt = -abs(amt) # Debit
+                            # SIGN DETECTION (Prioritize explicit sign over spatial)
+                            if sign == '-':
+                                amt = -abs(amt)
+                            elif sign == '+':
+                                amt = abs(amt)
                             else:
-                                amt = abs(amt) # Credit
+                                # Fallback to spatial if no explicit sign
+                                if amt_pos < credit_col_index:
+                                    amt = -abs(amt)
+                                else:
+                                    amt = abs(amt)
                             
                             # Format date
                             parts = re.split(r'[-/.]', d_str)
