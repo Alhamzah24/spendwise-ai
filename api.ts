@@ -69,6 +69,7 @@ export const apiUploadStatement = (file: File) => {
 // Legacy — kept for compatibility
 export const apiUploadBilan = apiUploadStatement;
 export const apiForecast = (data: object) => Promise.resolve({ forecast: [], trend: 'stable' });
+export const apiPredictXAU = (data: object) => Promise.resolve({ signal: 'HOLD', confidence: 0.5 });
 export const apiGetSimulations = () => Promise.resolve([]);
 export const apiCreateSimulation = (data: object) => Promise.resolve({ ...data });
 export const apiDeleteSimulation = (id: string) => Promise.resolve({ message: 'Deleted.' });
