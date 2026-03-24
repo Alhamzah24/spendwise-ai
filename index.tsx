@@ -116,16 +116,21 @@ const Sidebar = ({ activeView, setView }: { activeView: View; setView: (v: View)
 
 const MarketChart = ({ symbol, interval }: { symbol: string, interval: string }) => {
   const containerId = `tv_chart_${symbol.replace(':', '_')}`;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const widgetRef = useRef<any>(null);
   
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/tv.js';
-    script.async = true;
-    script.onload = () => {
+    const initWidget = () => {
       // @ts-ignore
-      if (window.TradingView) {
+      if (window.TradingView && containerRef.current) {
+        containerRef.current.innerHTML = ''; // Force clear
+        const container = document.createElement('div');
+        container.id = containerId;
+        container.style.height = '500px';
+        containerRef.current.appendChild(container);
+
         // @ts-ignore
-        new window.TradingView.widget({
+        widgetRef.current = new window.TradingView.widget({
           "width": "100%",
           "height": 500,
           "symbol": symbol,
@@ -143,10 +148,25 @@ const MarketChart = ({ symbol, interval }: { symbol: string, interval: string })
         });
       }
     };
-    document.head.appendChild(script);
+
+    if (document.getElementById('tradingview-script')) {
+      initWidget();
+    } else {
+      const script = document.createElement('script');
+      script.id = 'tradingview-script';
+      script.src = 'https://s3.tradingview.com/tv.js';
+      script.async = true;
+      script.onload = initWidget;
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      if (containerRef.current) containerRef.current.innerHTML = '';
+      widgetRef.current = null;
+    };
   }, [symbol, interval]);
 
-  return <div id={containerId} className="rounded-3xl overflow-hidden border border-[#1a1a1a] bg-[#050505]" />;
+  return <div ref={containerRef} className="rounded-3xl overflow-hidden border border-[#1a1a1a] bg-[#050505]" />;
 };
 
 // --- Views ---
@@ -771,14 +791,15 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
 
              <div className="relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-black/40 group/chart shadow-inner">
                 <MarketChart symbol="OANDA:XAUUSD" interval={gap} />
-                <div className="absolute top-6 right-6 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                 <div className="absolute top-6 right-6 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                     <i data-lucide="shield-check" className="w-3 h-3 text-emerald-500"></i>
                     <span className="text-[8px] font-black text-zinc-300 uppercase tracking-widest">Secure Link Established</span>
-                </div>
-             </div>
+                 </div>
+              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                 <button 
+                  key="neural-scan-btn"
                   onClick={handleGoldAnalysis}
                   disabled={isAnalyzingGold}
                   className="group/btn relative py-8 bg-zinc-900 overflow-hidden font-black rounded-[2.5rem] transition-all duration-500 shadow-2xl hover:scale-[1.02] active:scale-95 disabled:opacity-50"
@@ -786,7 +807,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-90 group-hover/btn:opacity-100 transition-opacity"></div>
                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
                    
-                   <div className="relative flex items-center justify-center gap-5 text-white uppercase tracking-[0.3em] text-xs">
+                   <div key={isAnalyzingGold ? 'scanning' : 'ready'} className="relative flex items-center justify-center gap-5 text-white uppercase tracking-[0.3em] text-xs">
                       {isAnalyzingGold ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
@@ -794,7 +815,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                         </>
                       ) : (
                         <>
-                          <i data-lucide="brain-cog" className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-1000"></i>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-1000"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
                           <span>Neural Alpha Scan</span>
                         </>
                       )}
@@ -818,7 +839,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
         {/* --- Side Analysis Column --- */}
         <div className="lg:col-span-4 h-full">
           {goldAnalysis ? (
-            <div className={`bg-[#0c0c0c] border-[3px] rounded-[4rem] p-12 h-full flex flex-col relative overflow-hidden shadow-3xl transition-all duration-700 ${goldAnalysis.signal === 'BUY' ? 'border-emerald-500/20 shadow-emerald-500/10' : goldAnalysis.signal === 'SELL' ? 'border-red-500/20 shadow-red-500/10' : 'border-zinc-500/20 shadow-zinc-500/10'}`}>
+            <div key="analysis-results" className={`bg-[#0c0c0c] border-[3px] rounded-[4rem] p-12 h-full flex flex-col relative overflow-hidden shadow-3xl transition-all duration-700 ${goldAnalysis.signal === 'BUY' ? 'border-emerald-500/20 shadow-emerald-500/10' : goldAnalysis.signal === 'SELL' ? 'border-red-500/20 shadow-red-500/10' : 'border-zinc-500/20 shadow-zinc-500/10'}`}>
                
                <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
                   <i data-lucide={goldAnalysis.signal === 'BUY' ? 'trending-up' : goldAnalysis.signal === 'SELL' ? 'trending-down' : 'activity'} className="w-64 h-64"></i>
@@ -878,7 +899,7 @@ const InvestmentsView = ({ onSimulate }: { onSimulate: (s: Simulation) => void }
                </div>
             </div>
           ) : (
-            <div className="bg-[#0c0c0c] border border-dashed border-white/10 rounded-[4rem] p-16 h-full flex flex-col items-center justify-center text-center space-y-10 group hover:border-emerald-500/30 transition-all duration-1000">
+            <div key="analysis-standby" className="bg-[#0c0c0c] border border-dashed border-white/10 rounded-[4rem] p-16 h-full flex flex-col items-center justify-center text-center space-y-10 group hover:border-emerald-500/30 transition-all duration-1000">
                <div className="relative">
                   <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
                   <div className="relative w-32 h-32 bg-[#121212] rounded-[3rem] flex items-center justify-center text-zinc-800 shadow-2xl border border-white/5 group-hover:scale-110 group-hover:text-emerald-500 transition-all duration-700">
@@ -1027,10 +1048,11 @@ const App = () => {
 
 const container = document.getElementById('root');
 if (container) {
-  const root = createRoot(document.getElementById('root')!);
-root.render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
-);
+  const root = createRoot(container);
+  root.render(
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
 }
+
