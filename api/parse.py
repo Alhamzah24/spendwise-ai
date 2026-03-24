@@ -1,5 +1,10 @@
+import json
+import base64
 import csv
 import io
+import re
+import pdfplumber
+from http.server import BaseHTTPRequestHandler
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
