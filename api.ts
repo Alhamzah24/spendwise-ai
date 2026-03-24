@@ -55,12 +55,12 @@ export const apiBudget = (data: { transactions: object[] }) =>
 export const apiChat = (data: { message: string, transactions: object[] }) =>
   fetch(`${API}/ml`, { method: 'POST', headers: headers(), body: JSON.stringify({ action: 'chat', ...data }) }).then(r => r.json());
 
-// PDF/CSV parsing → api/parse-statement.ts
+// PDF/CSV parsing → api/parse.py (Python)
 export const apiUploadStatement = async (file: File) => {
   // Convert file to base64 for serverless-compatible upload
   const arrayBuffer = await file.arrayBuffer();
   const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-  return fetch(`${API}/parse-statement`, {
+  return fetch(`${API}/parse`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify({ filename: file.name, fileBase64: base64 })
