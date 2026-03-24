@@ -131,10 +131,12 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data).encode())
 
     def _detect_category(self, label):
-        l = label.lower()
-        if any(w in l for w in ['netflix', 'spotify', 'amazon prime', 'abonnement']): return 'Abonnements'
-        if any(w in l for w in ['burger', 'mcdonald', 'kfc', 'resto', 'food', 'market', 'carrefour']): return 'Alimentation'
-        if any(w in l for w in ['uber', 'bolt', 'sncf', 'train', 'bus']): return 'Transport'
-        if any(w in l for w in ['loyer', 'immo']): return 'Immobilier'
-        if any(w in l for w in ['trading', 'bourse', 'invest']): return 'Trading'
-        return 'Business'
+        l = label.upper()
+        if any(w in l for w in ['NETFLIX', 'SPOTIFY', 'PRLV', 'IMAGINE R', 'ABONNEMENT', 'DISNEY']): return 'Abonnements'
+        if any(w in l for w in ['MARKET', 'CARREFOUR', 'AUCHAN', 'LECLERC', 'FOOD', 'MONOPRIX', 'LIDL']): return 'Alimentation'
+        if any(w in l for w in ['UBER', 'BOLT', 'SNCF', 'TRAIN', 'BUS', 'RATP']): return 'Transport'
+        if any(w in l for w in ['LOYER', 'IMMO', 'FONCIER']): return 'Immobilier'
+        if any(w in l for w in ['TRADING', 'BOURSE', 'INVEST', 'BINANCE', 'COINBASE']): return 'Trading'
+        if any(w in l for w in ['RESTO', 'BURGER', 'MCDO', 'KFC', 'DELIVEROO', 'EAT']): return 'Restaurants'
+        if any(w in l for w in ['VERSEMENT', 'SALAIRE', 'URSSAF', 'VIREMENT']): return 'Business'
+        return 'Achats'
